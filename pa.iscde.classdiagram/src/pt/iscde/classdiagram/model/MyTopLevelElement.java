@@ -13,6 +13,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 
+import pt.iscde.classdiagram.extensibility.ClassDiagramFilter;
 import pt.iscde.classdiagram.model.types.EModifierType;
 import pt.iscde.classdiagram.model.types.ETopElementType;
 import pt.iscde.classdiagram.ui.ToolTipFigure;
@@ -29,6 +30,7 @@ public class MyTopLevelElement implements TopLevelElement {
 	private Set<EModifierType> modifiers;
 
 	private Map<String, Image> imageMap;
+	private List<ClassDiagramFilter> filters;
 
 	public MyTopLevelElement(String id, String name, ETopElementType classType, Map<String, Image> imageMap) {
 		this.id = id;
@@ -84,16 +86,31 @@ public class MyTopLevelElement implements TopLevelElement {
 		UMLClassFigure classFigure = new UMLClassFigure(classLabel);
 
 		if (attrinutes != null && attrinutes.size() > 0) {
+			boolean displaybleAttributesFound = false;
 			for (ChildElementTemplate childElement : attrinutes) {
-				classFigure.getAttributesCompartment().add(childElement.getLabel());
+				if (canBeRedered(childElement)) {
+					classFigure.getAttributesCompartment().add(childElement.getLabel());
+					displaybleAttributesFound = true;
+				}
+			}
+			
+			if(!displaybleAttributesFound){
+				classFigure.getAttributesCompartment().add(new Label("", null));
 			}
 		} else {
 			classFigure.getAttributesCompartment().add(new Label("", null));
 		}
 
 		if (methods != null && methods.size() > 0) {
+			boolean displaybleMethodsFound = false;
 			for (ChildElementTemplate childElement : methods) {
-				classFigure.getMethodsCompartment().add(childElement.getLabel());
+				if (canBeRedered(childElement)) {
+					classFigure.getMethodsCompartment().add(childElement.getLabel());
+					displaybleMethodsFound = true;
+				}
+			}
+			if(!displaybleMethodsFound){
+				classFigure.getAttributesCompartment().add(new Label("", null));
 			}
 		} else {
 			classFigure.getMethodsCompartment().add(new Label("", null));
@@ -102,6 +119,21 @@ public class MyTopLevelElement implements TopLevelElement {
 		classFigure.setSize(-1, -1);
 
 		return classFigure;
+	}
+
+	private boolean canBeRedered(ChildElementTemplate childElement) {
+		if (filters != null) {
+			for (ClassDiagramFilter filter : filters) {
+				if (childElement instanceof AttributeElement) {
+					AttributeElement attribute = (AttributeElement) childElement;
+					return filter.acceptAttribute(attribute);
+				} else if (childElement instanceof MethodElement) {
+					MethodElement method = (MethodElement) childElement;
+					return filter.acceptMethod(method);
+				}
+			}
+		}
+		return true;
 	}
 
 	private Image getClassIcon() {
@@ -181,6 +213,12 @@ public class MyTopLevelElement implements TopLevelElement {
 	@Override
 	public void setSelected() {
 		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setFilters(List<ClassDiagramFilter> filters) {
+		this.filters = filters;
 
 	}
 }

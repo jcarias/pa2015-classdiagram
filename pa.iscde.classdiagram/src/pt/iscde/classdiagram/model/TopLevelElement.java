@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.eclipse.draw2d.IFigure;
 
+import pt.iscde.classdiagram.extensibility.ClassDiagramFilter;
 import pt.iscde.classdiagram.model.types.EModifierType;
 import pt.iscde.classdiagram.model.types.ETopElementType;
 
@@ -15,6 +16,7 @@ import pt.iscde.classdiagram.model.types.ETopElementType;
  *
  */
 public interface TopLevelElement {
+	
 	/**
 	 * Gets the element unique ID
 	 * 
@@ -51,5 +53,9 @@ public interface TopLevelElement {
 	public void addMmodifier(EModifierType modifierType);
 
 	public void setSelected();
+
+	void setFilters(List<ClassDiagramFilter> filters);
+	
+	
 	
 }

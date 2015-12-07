@@ -66,4 +66,5 @@ public class AttributeElement extends ChildElementTemplate {
 		return EChildElementType.Attribute;
 	}
 
+	
 }

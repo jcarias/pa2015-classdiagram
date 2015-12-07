@@ -3,10 +3,10 @@
 <schema targetNamespace="pt.iscte.pidesco.classdiagram" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="pt.iscte.pidesco.classdiagram" id="textext" name="Test Extension"/>
+         <meta.schema plugin="pt.iscte.pidesco.classdiagram" id="Filter" name="filter"/>
       </appinfo>
       <documentation>
-         Extensão de Teste
+         [Enter description of this extension point.]
       </documentation>
    </annotation>
 
@@ -18,7 +18,7 @@
       </annotation>
       <complexType>
          <sequence>
-            <element ref="item"/>
+            <element ref="FilterClass"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -47,22 +47,15 @@
       </complexType>
    </element>
 
-   <element name="item">
+   <element name="FilterClass">
       <complexType>
-         <attribute name="name" type="string">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-            </annotation>
-         </attribute>
-         <attribute name="class" type="string">
+         <attribute name="new_attribute" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java"/>
+                  <meta.attribute kind="java" basedOn=":pt.iscde.classdiagram.extensibility.AttributeFilter"/>
                </appinfo>
             </annotation>
          </attribute>

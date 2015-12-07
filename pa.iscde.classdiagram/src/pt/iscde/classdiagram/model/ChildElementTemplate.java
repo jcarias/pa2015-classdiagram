@@ -128,7 +128,14 @@ public abstract class ChildElementTemplate {
 		return decoratedImage;
 	}
 
+	
+	public boolean isPublic() {
+		return accessControlType == EModifierType.PUBLIC;
+	}
+	
 	public abstract EChildElementType getElementType();
 
 	public abstract IFigure getLabel();
+	
+	
 }

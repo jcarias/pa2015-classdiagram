@@ -25,6 +25,7 @@ import org.eclipse.zest.layouts.algorithms.HorizontalShift;
 //import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 
+import pt.iscde.classdiagram.extensibility.ClassDiagramFilter;
 import pt.iscde.classdiagram.model.zest.ClassDiagramContentProvider;
 import pt.iscde.classdiagram.model.zest.ClassDiagramLabelProvider;
 import pt.iscde.classdiagram.model.zest.NodeModelContentProvider;
@@ -46,16 +47,20 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 	private static ProjectBrowserServices browserServices;
 	private static JavaEditorServices javaEditorServices;
 
+	private List<ClassDiagramFilter> filters;
+	
 	private GraphViewer viewer;
 	private NodeModelContentProvider model;
 	private Map<String, Image> imageMap;
 
 	public ClassDiagramView() {
+		instance = this;
 		pidescoServices = ClassDiagramActivator.getInstance().getPidescoServices();
 		browserServices = ClassDiagramActivator.getInstance().getBrowserServices();
 		javaEditorServices = ClassDiagramActivator.getInstance().getJavaEditorServices();
 		browserServices.addListener(this);
 		javaEditorServices.addListener(this);
+		filters = new ArrayList<ClassDiagramFilter>();
 	}
 
 	public static ClassDiagramView getInstance() {
@@ -88,27 +93,6 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 	@Override
 	public void update(SourceElement sourceElement) {
 		actualizaDiagrama(sourceElement.getFile());
-		
-		
-		IExtensionRegistry extRegistry = Platform.getExtensionRegistry();
-		IExtensionPoint extensionPoint = extRegistry.getExtensionPoint("pt.iscte.pidesco.classdiagram.textext");
-		
-		IExtension[] extensions = extensionPoint.getExtensions();
-		for(IExtension e : extensions) {
-		    IConfigurationElement[] confElements = e.getConfigurationElements();
-		    for(IConfigurationElement c : confElements) {
-		        String s = c.getAttribute("name");
-		        try {
-		            Object o = c.createExecutableExtension("class");
-		            
-		           
-		            System.out.println(o.toString());
-		        } catch (CoreException e1) {
-		            // TODO Auto-generated catch block
-		            e1.printStackTrace();
-		        }
-		    }
-		}
 	}
 
 	List<String> metodos = new ArrayList<String>();
@@ -122,6 +106,7 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 		model = new NodeModelContentProvider();
 		ClassDiagramElementVisitor elementVisitor = new ClassDiagramElementVisitor(imageMap, model);
 		javaEditorServices.parseFile(file, elementVisitor);
+		model.addFilters(filters);
 		viewer.setInput(model.getNodes());
 	}
 
@@ -173,6 +158,37 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 			return visitor.getTopLevelNode().getFigure();
 		}
 		return null;
+	}
+
+	public void toggleFilters(boolean activate) {
+		if(activate){
+			IExtensionRegistry extRegistry = Platform.getExtensionRegistry();
+			IExtensionPoint extensionPoint = extRegistry.getExtensionPoint("pt.iscte.pidesco.classdiagram.Filter");
+			IExtension[] extensions = extensionPoint.getExtensions();
+			for(IExtension e : extensions) {
+			    IConfigurationElement[] confElements = e.getConfigurationElements();
+			    for(IConfigurationElement c : confElements) {
+			        try {
+			            Object o = c.createExecutableExtension("new_attribute");
+			            if (o instanceof ClassDiagramFilter) {
+			            	ClassDiagramFilter filter = (ClassDiagramFilter) o;
+			            	filters.add(filter);
+						}
+			           
+			        } catch (CoreException e1) {
+			            e1.printStackTrace();
+			        }
+			    }
+			}
+			
+			model.addFilters(filters);
+			
+		}else{
+			model.clearFilters();
+			filters = new ArrayList<ClassDiagramFilter>();
+		}
+		viewer.refresh();
+		viewer.setInput(model.getNodes());
 	}
 
 }
