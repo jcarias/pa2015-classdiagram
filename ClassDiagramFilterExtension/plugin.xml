@@ -4,7 +4,7 @@
    <extension
          point="pt.iscte.pidesco.classdiagram.Filter">
       <FilterClass
-            new_attribute="classdiagramfilterextension.FilterNonPublicElements">
+            filter="classdiagramfilterextension.ExtensionPointTestFilter">
       </FilterClass>
    </extension>
 

@@ -12,7 +12,7 @@ import org.eclipse.zest.core.widgets.ZestStyles;
 
 import pt.iscde.classdiagram.model.TopLevelElement;
 
-public class ClassDiagramLabelProvider extends LabelProvider implements ISelfStyleProvider, IFigureProvider {
+public class ClassDiagramLabelProvider extends LabelProvider implements ISelfStyleProvider, IFigureProvider{
 
 	@Override
 	public String getText(Object element) {
@@ -44,7 +44,6 @@ public class ClassDiagramLabelProvider extends LabelProvider implements ISelfSty
 
 	@Override
 	public void selfStyleNode(Object element, GraphNode node) {
-		
 	}
 
 	@Override
@@ -85,6 +84,5 @@ public class ClassDiagramLabelProvider extends LabelProvider implements ISelfSty
 
 		return null;
 	}
-
 
 }

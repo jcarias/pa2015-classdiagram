@@ -54,8 +54,5 @@ public interface TopLevelElement {
 
 	public void setSelected();
 
-	void setFilters(List<ClassDiagramFilter> filters);
-	
-	
-	
+	public void setFilters(List<ClassDiagramFilter> filters);
 }

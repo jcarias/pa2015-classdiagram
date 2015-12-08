@@ -49,13 +49,13 @@
 
    <element name="FilterClass">
       <complexType>
-         <attribute name="new_attribute" type="string" use="required">
+         <attribute name="filter" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":pt.iscde.classdiagram.extensibility.AttributeFilter"/>
+                  <meta.attribute kind="java" basedOn=":pt.iscde.classdiagram.extensibility.ClassDiagramFilter"/>
                </appinfo>
             </annotation>
          </attribute>

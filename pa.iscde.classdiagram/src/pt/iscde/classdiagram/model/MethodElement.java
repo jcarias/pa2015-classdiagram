@@ -42,9 +42,9 @@ public class MethodElement extends ChildElementTemplate {
 
 	private String getParameterTypesString() {
 		StringBuilder sb = new StringBuilder();
-		if(parameterTypes!=null){
+		if (parameterTypes != null) {
 			for (int i = 0; i < parameterTypes.size(); i++) {
-				if(i>0)
+				if (i > 0)
 					sb.append(", ");
 				sb.append(parameterTypes.get(i));
 			}
@@ -55,32 +55,33 @@ public class MethodElement extends ChildElementTemplate {
 	private Image getIcon() {
 
 		Image image = null;
-
-		switch (getAccessControlType()) {
-		case PACKAGE:
-			image = imageMap.get("methdef_obj.png");
-			break;
-		case PRIVATE:
-			image = imageMap.get("methpri_obj.png");
-			break;
-		case PROTECTED:
-			image = imageMap.get("methpro_obj.png");
-			break;
-		case PUBLIC:
-			image = imageMap.get("methpub_obj.png");
-			break;
-		default:
-			return null;
+		if (getAccessControlType() != null) {
+			switch (getAccessControlType()) {
+			case PACKAGE:
+				image = imageMap.get("methdef_obj.png");
+				break;
+			case PRIVATE:
+				image = imageMap.get("methpri_obj.png");
+				break;
+			case PROTECTED:
+				image = imageMap.get("methpro_obj.png");
+				break;
+			case PUBLIC:
+				image = imageMap.get("methpub_obj.png");
+				break;
+			default:
+				image = imageMap.get("methdef_obj.png");
+			}
 		}
 
-		if(getModifiers()!=null){
+		if (getModifiers() != null) {
 			int mergedOverlays = 0;
 			for (EModifierType modifierType : getModifiers()) {
 				Image overlayImg = EModifierType.getModifierIcon(modifierType, imageMap);
 				image = getDecoratedImage(image, overlayImg, mergedOverlays++);
 			}
 		}
-		
+
 		return image;
 	}
 
@@ -89,5 +90,4 @@ public class MethodElement extends ChildElementTemplate {
 		return EChildElementType.Method;
 	}
 
-	
 }

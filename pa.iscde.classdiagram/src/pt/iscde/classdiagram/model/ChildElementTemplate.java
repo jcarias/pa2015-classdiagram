@@ -25,7 +25,7 @@ public abstract class ChildElementTemplate {
 		this.modifiers = new HashSet<EModifierType>();
 	}
 
-	public String getName() {
+	protected String getName() {
 		return name;
 	}
 
@@ -33,7 +33,7 @@ public abstract class ChildElementTemplate {
 		this.name = name;
 	}
 
-	public EModifierType getAccessControlType() {
+	protected EModifierType getAccessControlType() {
 		return accessControlType;
 	}
 
