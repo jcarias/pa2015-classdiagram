@@ -27,7 +27,7 @@ public class ExtensionPointTestFilter implements ClassDiagramFilter {
 
 	@Override
 	public boolean acceptTopElement(ETopElementType type, String name, EModifierType visibility, Set<EModifierType> modifiers) {
-		return ETopElementType.CLASS == type;
+		return ETopElementType.CLASS.equals(type) || ETopElementType.SUPERCLASS.equals(type);
 	}
 
 	@Override

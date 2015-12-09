@@ -3,7 +3,6 @@ package pt.iscde.classdiagram.model.zest;
 import java.util.ArrayList;
 import java.util.List;
 
-import pt.iscde.classdiagram.extensibility.ClassDiagramAction;
 import pt.iscde.classdiagram.extensibility.ClassDiagramFilter;
 import pt.iscde.classdiagram.model.MyConnection;
 import pt.iscde.classdiagram.model.MyTopLevelElement;
