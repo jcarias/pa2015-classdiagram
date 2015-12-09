@@ -4,19 +4,14 @@ import java.util.Map;
 
 import org.eclipse.swt.graphics.Image;
 
+/**
+ * Enum containing the possible Modifiers or Access Control Types an element can have
+ * @author joaocarias
+ *
+ */
 public enum EModifierType {
-	PACKAGE,
-	PRIVATE,
-	PUBLIC,
-	PROTECTED,
-	STATIC,
-	FINAL,
-	ABSTRACT,
-	SYNCHRONIZED,
-	VOLATILE,
-	TRANSIENT, 
-	CONSTRUCTOR;
-	
+	PACKAGE, PRIVATE, PUBLIC, PROTECTED, STATIC, FINAL, ABSTRACT, SYNCHRONIZED, VOLATILE, TRANSIENT, CONSTRUCTOR;
+
 	public static Image getModifierIcon(EModifierType modifierType, Map<String, Image> imageMap) {
 		switch (modifierType) {
 		case ABSTRACT:
@@ -33,7 +28,7 @@ public enum EModifierType {
 			return imageMap.get("volatile_co.png");
 		case CONSTRUCTOR:
 			return imageMap.get("constr_ovr.png");
-			
+
 		default:
 			return null;
 		}

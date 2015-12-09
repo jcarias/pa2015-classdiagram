@@ -2,6 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="Filter" name="filter" schema="schema/Filter.exsd"/>
+   <extension-point id="PopupAction" name="Popup Action" schema="schema/PopupAction.exsd"/>
    <extension
          id="classDiagram"
          name="Diagrama de Classes"

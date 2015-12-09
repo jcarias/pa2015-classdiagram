@@ -3,6 +3,7 @@ package pt.iscde.classdiagram.model.zest;
 import java.util.ArrayList;
 import java.util.List;
 
+import pt.iscde.classdiagram.extensibility.ClassDiagramAction;
 import pt.iscde.classdiagram.extensibility.ClassDiagramFilter;
 import pt.iscde.classdiagram.model.MyConnection;
 import pt.iscde.classdiagram.model.MyTopLevelElement;
@@ -11,7 +12,6 @@ public class NodeModelContentProvider{
 	private List<MyConnection> connections;
 	private List<MyTopLevelElement> nodes;
 	private List<ClassDiagramFilter> filters;
-	
 
 	public NodeModelContentProvider() {
 		nodes = new ArrayList<MyTopLevelElement>();
@@ -58,4 +58,5 @@ public class NodeModelContentProvider{
 			}
 		}
 	}
+	
 }

@@ -25,7 +25,7 @@ public class MyTopLevelElement implements TopLevelElement {
 	private ETopElementType classType;
 	private EModifierType accessControlType;
 	private List<TopLevelElement> connections;
-	private List<ChildElementTemplate> attrinutes;
+	private List<ChildElementTemplate> attributes;
 	private List<ChildElementTemplate> methods;
 	private Set<EModifierType> modifiers;
 
@@ -39,14 +39,14 @@ public class MyTopLevelElement implements TopLevelElement {
 		this.imageMap = imageMap;
 
 		this.connections = new ArrayList<TopLevelElement>();
-		this.attrinutes = new ArrayList<>();
+		this.attributes = new ArrayList<>();
 		this.methods = new ArrayList<>();
 		this.modifiers = new HashSet<EModifierType>();
 	}
 
 	public MyTopLevelElement() {
 		this.connections = new ArrayList<TopLevelElement>();
-		this.attrinutes = new ArrayList<>();
+		this.attributes = new ArrayList<>();
 		this.methods = new ArrayList<>();
 		this.modifiers = new HashSet<EModifierType>();
 	}
@@ -70,7 +70,7 @@ public class MyTopLevelElement implements TopLevelElement {
 
 	@Override
 	public void addAttribute(ChildElementTemplate childElement) {
-		this.attrinutes.add(childElement);
+		this.attributes.add(childElement);
 	}
 
 	@Override
@@ -80,14 +80,20 @@ public class MyTopLevelElement implements TopLevelElement {
 
 	@Override
 	public IFigure getFigure() {
+		if(filters!=null)
+		for (ClassDiagramFilter filter : filters) {
+			if(!filter.acceptTopElement(classType, name, accessControlType, modifiers));
+			return null;
+		}
+		
 		Label classLabel = new Label(getName(), getClassIcon());
 		classLabel.setFont(new Font(null, "Arial", 12, SWT.BOLD));
 		classLabel.setToolTip(new ToolTipFigure(getId()));
 		UMLClassFigure classFigure = new UMLClassFigure(classLabel);
-
-		if (attrinutes != null && attrinutes.size() > 0) {
+		
+		if (attributes != null && attributes.size() > 0) {
 			boolean displaybleAttributesFound = false;
-			for (ChildElementTemplate childElement : attrinutes) {
+			for (ChildElementTemplate childElement : attributes) {
 				if (canBeRedered(childElement)) {
 					classFigure.getAttributesCompartment().add(childElement.getLabel());
 					displaybleAttributesFound = true;
@@ -110,7 +116,7 @@ public class MyTopLevelElement implements TopLevelElement {
 				}
 			}
 			if(!displaybleMethodsFound){
-				classFigure.getAttributesCompartment().add(new Label("", null));
+				classFigure.getMethodsCompartment().add(new Label("", null));
 			}
 		} else {
 			classFigure.getMethodsCompartment().add(new Label("", null));
@@ -124,13 +130,7 @@ public class MyTopLevelElement implements TopLevelElement {
 	private boolean canBeRedered(ChildElementTemplate childElement) {
 		if (filters != null) {
 			for (ClassDiagramFilter filter : filters) {
-				if (childElement instanceof AttributeElement) {
-					AttributeElement attribute = (AttributeElement) childElement;
-					return filter.acceptAttribute(attribute);
-				} else if (childElement instanceof MethodElement) {
-					MethodElement method = (MethodElement) childElement;
-					return filter.acceptMethod(method);
-				}
+				return filter.acceptCildElement(childElement.getElementType(), childElement.getName(), childElement.getAccessControlType(), childElement.getModifiers(), childElement.getReturnType());
 			}
 		}
 		return true;
