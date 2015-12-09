@@ -16,6 +16,4 @@ public class RefreshAction extends Action {
 		viewer.refresh();
 		viewer.applyLayout();
 	}
-
-	
 }
