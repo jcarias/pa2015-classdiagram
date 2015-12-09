@@ -9,7 +9,12 @@ import pt.iscde.classdiagram.model.types.ETopElementType;
 
 public class ExtensionPointTestFilter implements ClassDiagramFilter {
 
-	
+	private boolean active;
+
+	public ExtensionPointTestFilter() {
+		this.active = true;
+	}
+
 	@Override
 	public String getFilterName() {
 		return "Example filter";
@@ -27,11 +32,23 @@ public class ExtensionPointTestFilter implements ClassDiagramFilter {
 
 	@Override
 	public boolean acceptCildElement(EChildElementType type, String name, EModifierType visibility, Set<EModifierType> modifiers, String returnType) {
-		
+
 		return modifiers.contains(EModifierType.CONSTRUCTOR);
 	}
 
-	
+	@Override
+	public boolean isActive() {
+		return active;
+	}
 
+	@Override
+	public void activate() {
+		active = true;
+	}
 
+	@Override
+	public void deactivate() {
+		active = false;
+
+	}
 }
