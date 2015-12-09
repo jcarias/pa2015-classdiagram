@@ -68,8 +68,6 @@ public interface ClassDiagramFilter {
 	 *         <code>false</code> otherwise.
 	 */
 	public boolean acceptCildElement(EChildElementType type, String name, EModifierType visibility, Set<EModifierType> modifiers, String returnType);
-<<<<<<< HEAD
-=======
 	
 	/**
 	 * Gets the filter active state
@@ -86,5 +84,4 @@ public interface ClassDiagramFilter {
 	 * Deactivates the filter. Implementations must change the flag's value returned by <code>boolean isActive()</code> to <code>false</code>.
 	 */
 	public void deactivate();
->>>>>>> origin/master
 }

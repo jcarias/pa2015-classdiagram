@@ -80,17 +80,17 @@ public class MyTopLevelElement implements TopLevelElement {
 
 	@Override
 	public IFigure getFigure() {
-		if(filters!=null)
-		for (ClassDiagramFilter filter : filters) {
-			if(!filter.acceptTopElement(classType, name, accessControlType, modifiers));
-			return null;
-		}
-		
+		if (filters != null)
+			for (ClassDiagramFilter filter : filters) {
+				if (filter.isActive() && !filter.acceptTopElement(classType, name, accessControlType, modifiers))
+				return null;
+			}
+
 		Label classLabel = new Label(getName(), getClassIcon());
 		classLabel.setFont(new Font(null, "Arial", 12, SWT.BOLD));
 		classLabel.setToolTip(new ToolTipFigure(getId()));
 		UMLClassFigure classFigure = new UMLClassFigure(classLabel);
-		
+
 		if (attributes != null && attributes.size() > 0) {
 			boolean displaybleAttributesFound = false;
 			for (ChildElementTemplate childElement : attributes) {
@@ -99,8 +99,8 @@ public class MyTopLevelElement implements TopLevelElement {
 					displaybleAttributesFound = true;
 				}
 			}
-			
-			if(!displaybleAttributesFound){
+
+			if (!displaybleAttributesFound) {
 				classFigure.getAttributesCompartment().add(new Label("", null));
 			}
 		} else {
@@ -115,7 +115,7 @@ public class MyTopLevelElement implements TopLevelElement {
 					displaybleMethodsFound = true;
 				}
 			}
-			if(!displaybleMethodsFound){
+			if (!displaybleMethodsFound) {
 				classFigure.getMethodsCompartment().add(new Label("", null));
 			}
 		} else {
@@ -130,7 +130,10 @@ public class MyTopLevelElement implements TopLevelElement {
 	private boolean canBeRedered(ChildElementTemplate childElement) {
 		if (filters != null) {
 			for (ClassDiagramFilter filter : filters) {
-				return filter.acceptCildElement(childElement.getElementType(), childElement.getName(), childElement.getAccessControlType(), childElement.getModifiers(), childElement.getReturnType());
+				if (filter.isActive())
+					return filter.acceptCildElement(childElement.getElementType(), childElement.getName(), childElement.getAccessControlType(), childElement.getModifiers(), childElement.getReturnType());
+				else
+					return true;
 			}
 		}
 		return true;
