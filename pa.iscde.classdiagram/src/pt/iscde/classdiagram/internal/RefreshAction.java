@@ -8,7 +8,11 @@ public class RefreshAction extends Action {
 	GraphViewer viewer;
 	public RefreshAction(GraphViewer viewer) {
 		this.viewer = viewer;
+<<<<<<< HEAD
 		setText("Refresh");
+=======
+		setText("refresh");
+>>>>>>> origin/master
 	}
 
 	@Override
@@ -16,6 +20,9 @@ public class RefreshAction extends Action {
 		viewer.refresh();
 		viewer.applyLayout();
 	}
+<<<<<<< HEAD
 
 	
+=======
+>>>>>>> origin/master
 }

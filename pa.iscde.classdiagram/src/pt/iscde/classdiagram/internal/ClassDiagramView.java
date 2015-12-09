@@ -13,8 +13,14 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.draw2d.IFigure;
+<<<<<<< HEAD
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.MenuManager;
+=======
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
+>>>>>>> origin/master
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -25,6 +31,7 @@ import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.CompositeLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.HorizontalShift;
 import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
+import org.omg.CORBA.PUBLIC_MEMBER;
 
 import pt.iscde.classdiagram.extensibility.ClassDiagramAction;
 import pt.iscde.classdiagram.extensibility.ClassDiagramFilter;
@@ -52,7 +59,10 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 	private static JavaEditorServices javaEditorServices;
 
 	private List<ClassDiagramFilter> filters;
+<<<<<<< HEAD
 	private ArrayList<ClassDiagramAction> popupActions;
+=======
+>>>>>>> origin/master
 
 	private GraphViewer viewer;
 	private NodeModelContentProvider model;
@@ -87,9 +97,21 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 		LayoutAlgorithm layout = setLayout();
 		viewer.setLayoutAlgorithm(layout, true);
 		viewer.applyLayout();
+<<<<<<< HEAD
 		viewer.getGraphControl().addMouseListener(new ClassDiagramMenuHelper());
 		createMenu();
 		
+=======
+
+		createMenu();
+
+	}
+
+	private void createMenu() {
+		mm = new MenuManager();
+		viewer.getGraphControl().setMenu(mm.createContextMenu(viewer.getGraphControl()));
+		mm.add(new RefreshAction(viewer));
+>>>>>>> origin/master
 	}
 	
 	private LayoutAlgorithm setLayout() {
@@ -104,7 +126,11 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 	}
 
 	List<String> metodos = new ArrayList<String>();
+<<<<<<< HEAD
 	private IAction refresh;
+=======
+	private MenuManager mm;
+>>>>>>> origin/master
 
 	@Override
 	public void doubleClick(SourceElement element) {
@@ -123,6 +149,26 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 		} else if (element.isClass()) {
 			actualizaDiagrama(element.getFile());
 		}
+<<<<<<< HEAD
+=======
+	}
+
+	private void updateMenu() {
+		if (filters != null && filters.size() > 0) {
+			mm.add(new Separator());
+			for (ClassDiagramFilter classDiagramFilter : filters) {
+				mm.add(new Action(classDiagramFilter.getFilterName()){
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						super.run();
+					}
+				});
+			}
+		} else {
+			createMenu();
+		}
+>>>>>>> origin/master
 	}
 
 	private void actualizaDiagrama(File file) {
@@ -208,6 +254,7 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 			model.clearFilters();
 			filters = new ArrayList<ClassDiagramFilter>();
 		}
+		updateMenu();
 		viewer.refresh();
 		viewer.setInput(model.getNodes());
 	}
