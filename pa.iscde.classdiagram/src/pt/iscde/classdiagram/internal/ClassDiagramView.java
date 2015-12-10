@@ -79,7 +79,7 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 		viewer = new GraphViewer(viewArea, SWT.BORDER);
 		viewer.getGraphControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		viewer.setContentProvider(new ClassDiagramContentProvider());
-		viewer.setLabelProvider(new ClassDiagramLabelProvider());
+		viewer.setLabelProvider(new ClassDiagramLabelProvider(new DefaultStyler()));
 		model = new NodeModelContentProvider();
 		viewer.setInput(model.getNodes());
 		LayoutAlgorithm layout = setLayout();
@@ -88,8 +88,11 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 
 		createMenu();
 
+		viewer.addSelectionChangedListener(new ClassDiagramGraphViewerSelectionChangedListener(viewer));
+		
 	}
 
+	
 	private void createMenu() {
 		mm = new MenuManager();
 		viewer.getGraphControl().setMenu(mm.createContextMenu(viewer.getGraphControl()));
@@ -133,7 +136,8 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 		if (filters != null && filters.size() > 0) {
 			mm.add(new Separator());
 			for (ClassDiagramFilter classDiagramFilter : filters) {
-				mm.add(new FilterAction(classDiagramFilter, viewer));			}
+				mm.add(new FilterAction(classDiagramFilter, viewer));
+			}
 		} else {
 			createMenu();
 		}
@@ -190,7 +194,7 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 			ClassElement element = (ClassElement) sourceElement;
 			SourceElementVisitor visitor = new SourceElementVisitor(imageMap);
 			javaEditorServices.parseFile(element.getFile(), visitor);
-			return visitor.getTopLevelNode().getFigure();
+			return visitor.getTopLevelNode().getFigure(new DefaultStyler());
 		}
 		return null;
 	}
@@ -226,5 +230,4 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 		viewer.refresh();
 		viewer.setInput(model.getNodes());
 	}
-
 }

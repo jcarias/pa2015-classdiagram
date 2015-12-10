@@ -58,4 +58,12 @@ public class NodeModelContentProvider{
 		}
 	}
 	
+	
+	public void clearSelection(){
+		if(nodes!=null){
+			for (MyTopLevelElement element : nodes) {
+				element.setSelected(false);
+			}
+		}
+	}
 }

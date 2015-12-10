@@ -5,6 +5,7 @@ import java.util.List;
 import org.eclipse.draw2d.IFigure;
 
 import pt.iscde.classdiagram.extensibility.ClassDiagramFilter;
+import pt.iscde.classdiagram.extensibility.ClassDiagramStyler;
 import pt.iscde.classdiagram.model.types.EModifierType;
 import pt.iscde.classdiagram.model.types.ETopElementType;
 
@@ -48,11 +49,21 @@ public interface TopLevelElement {
 	
 	public void addMethod(ChildElementTemplate childElement);
 	
-	public IFigure getFigure();
+	public IFigure getFigure(ClassDiagramStyler styler);
 	
 	public void addMmodifier(EModifierType modifierType);
 
-	public void setSelected();
+	/**
+	 * Set the selected state
+	 * @param value <code>true</code> to set <b>selected</b>, <code>false</code> to set <b>unselected</b>
+	 */
+	public void setSelected(boolean value);
+	
+	/**
+	 * Gets the selected state
+	 * @return <code>true</code> if the element is selected, <code>false</code> otherwise 
+	 */
+	public boolean isSelected();
 
 	public void setFilters(List<ClassDiagramFilter> filters);
 }

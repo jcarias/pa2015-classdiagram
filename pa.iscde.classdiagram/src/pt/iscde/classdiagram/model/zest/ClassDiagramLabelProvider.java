@@ -10,9 +10,17 @@ import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.ZestStyles;
 
+import pt.iscde.classdiagram.extensibility.ClassDiagramStyler;
 import pt.iscde.classdiagram.model.TopLevelElement;
 
 public class ClassDiagramLabelProvider extends LabelProvider implements ISelfStyleProvider, IFigureProvider{
+
+	private ClassDiagramStyler styler;
+	
+	public ClassDiagramLabelProvider(ClassDiagramStyler styler) {
+		super();
+		this.styler = styler;
+	}
 
 	@Override
 	public String getText(Object element) {
@@ -79,7 +87,7 @@ public class ClassDiagramLabelProvider extends LabelProvider implements ISelfSty
 	public IFigure getFigure(Object element) {
 		if (element instanceof TopLevelElement) {
 			TopLevelElement topElement = (TopLevelElement) element;
-			return topElement.getFigure();
+			return topElement.getFigure(styler);
 		}
 
 		return null;

@@ -14,12 +14,14 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 
 import pt.iscde.classdiagram.extensibility.ClassDiagramFilter;
+import pt.iscde.classdiagram.extensibility.ClassDiagramStyler;
 import pt.iscde.classdiagram.model.types.EModifierType;
 import pt.iscde.classdiagram.model.types.ETopElementType;
 import pt.iscde.classdiagram.ui.ToolTipFigure;
 import pt.iscde.classdiagram.ui.UMLClassFigure;
 
 public class MyTopLevelElement implements TopLevelElement {
+	
 	private String id;
 	private String name;
 	private ETopElementType classType;
@@ -31,6 +33,7 @@ public class MyTopLevelElement implements TopLevelElement {
 
 	private Map<String, Image> imageMap;
 	private List<ClassDiagramFilter> filters;
+	private boolean selected;
 
 	public MyTopLevelElement(String id, String name, ETopElementType classType, Map<String, Image> imageMap) {
 		this.id = id;
@@ -79,7 +82,7 @@ public class MyTopLevelElement implements TopLevelElement {
 	}
 
 	@Override
-	public IFigure getFigure() {
+	public IFigure getFigure(ClassDiagramStyler styler) {
 		if (filters != null)
 			for (ClassDiagramFilter filter : filters) {
 				if (filter.isActive() && !filter.acceptTopElement(classType, name, accessControlType, modifiers))
@@ -89,8 +92,14 @@ public class MyTopLevelElement implements TopLevelElement {
 		Label classLabel = new Label(getName(), getClassIcon());
 		classLabel.setFont(new Font(null, "Arial", 12, SWT.BOLD));
 		classLabel.setToolTip(new ToolTipFigure(getId()));
+		
 		UMLClassFigure classFigure = new UMLClassFigure(classLabel);
-
+		if(isSelected()){
+			classFigure.setBackgroundColor(styler.getSelectedBackgroundColor());
+		}else{
+			classFigure.setBackgroundColor(styler.getBackgroundColor());
+		}
+		
 		if (attributes != null && attributes.size() > 0) {
 			boolean displaybleAttributesFound = false;
 			for (ChildElementTemplate childElement : attributes) {
@@ -214,14 +223,18 @@ public class MyTopLevelElement implements TopLevelElement {
 	}
 
 	@Override
-	public void setSelected() {
-		// TODO Auto-generated method stub
+	public void setFilters(List<ClassDiagramFilter> filters) {
+		this.filters = filters;
 
 	}
 
 	@Override
-	public void setFilters(List<ClassDiagramFilter> filters) {
-		this.filters = filters;
+	public void setSelected(boolean value) {
+		this.selected = value;
+	}
 
+	@Override
+	public boolean isSelected() {
+		return this.selected;
 	}
 }
