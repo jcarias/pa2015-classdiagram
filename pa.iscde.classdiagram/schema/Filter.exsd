@@ -55,7 +55,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":pt.iscde.classdiagram.extensibility.ClassDiagramFilter"/>
+                  <meta.attribute kind="java" basedOn="pt.iscde.classdiagram.extensibility.ClassDiagramFilter:"/>
                </appinfo>
             </annotation>
          </attribute>
