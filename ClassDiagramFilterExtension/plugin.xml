@@ -4,7 +4,8 @@
    <extension
          point="pt.iscte.pidesco.classdiagram.Filter">
       <FilterClass
-            filter="classdiagramfilterextension.ExtensionPointTestFilter">
+            filter="classdiagramfilterextension.ExtensionPointTestFilter"
+            filterName="Filter Example">
       </FilterClass>
    </extension>
 
