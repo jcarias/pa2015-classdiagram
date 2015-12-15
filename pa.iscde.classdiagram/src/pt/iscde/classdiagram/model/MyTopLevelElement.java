@@ -13,6 +13,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 
+import pt.iscde.classdiagram.extensibility.ClassDiagramAction;
 import pt.iscde.classdiagram.extensibility.ClassDiagramFilter;
 import pt.iscde.classdiagram.extensibility.ClassDiagramStyler;
 import pt.iscde.classdiagram.model.types.EModifierType;
@@ -33,6 +34,7 @@ public class MyTopLevelElement implements TopLevelElement {
 
 	private Map<String, Image> imageMap;
 	private List<ClassDiagramFilter> filters;
+	private List<ClassDiagramAction> actions;
 	private boolean selected;
 
 	public MyTopLevelElement(String id, String name, ETopElementType classType, Map<String, Image> imageMap) {
@@ -225,7 +227,11 @@ public class MyTopLevelElement implements TopLevelElement {
 	@Override
 	public void setFilters(List<ClassDiagramFilter> filters) {
 		this.filters = filters;
-
+	}
+	
+	@Override
+	public void setActions(List<ClassDiagramAction> actions){
+		this.actions = actions;
 	}
 
 	@Override
