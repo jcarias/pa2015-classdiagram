@@ -18,7 +18,7 @@ public class CompartmentFigure extends Figure {
 
 	class CompartmentFigureBorder extends AbstractBorder {
 		public Insets getInsets(IFigure figure) {
-			return new Insets(1, 0, 0, 0);
+			return new Insets(5, 5, 5, 5);
 		}
 
 		public void paint(IFigure figure, Graphics graphics, Insets insets) {

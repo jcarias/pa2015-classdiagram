@@ -8,11 +8,14 @@ import java.util.Set;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.MarginBorder;
+import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 
+import pt.iscde.classdiagram.extensibility.ClassDiagramAction;
 import pt.iscde.classdiagram.extensibility.ClassDiagramFilter;
 import pt.iscde.classdiagram.extensibility.ClassDiagramStyler;
 import pt.iscde.classdiagram.model.types.EModifierType;
@@ -21,7 +24,7 @@ import pt.iscde.classdiagram.ui.ToolTipFigure;
 import pt.iscde.classdiagram.ui.UMLClassFigure;
 
 public class MyTopLevelElement implements TopLevelElement {
-	
+
 	private String id;
 	private String name;
 	private ETopElementType classType;
@@ -33,6 +36,7 @@ public class MyTopLevelElement implements TopLevelElement {
 
 	private Map<String, Image> imageMap;
 	private List<ClassDiagramFilter> filters;
+	private List<ClassDiagramAction> actions;
 	private boolean selected;
 
 	public MyTopLevelElement(String id, String name, ETopElementType classType, Map<String, Image> imageMap) {
@@ -86,20 +90,21 @@ public class MyTopLevelElement implements TopLevelElement {
 		if (filters != null)
 			for (ClassDiagramFilter filter : filters) {
 				if (filter.isActive() && !filter.acceptTopElement(classType, name, accessControlType, modifiers))
-				return null;
+					return null;
 			}
 
 		Label classLabel = new Label(getName(), getClassIcon());
 		classLabel.setFont(new Font(null, "Arial", 12, SWT.BOLD));
 		classLabel.setToolTip(new ToolTipFigure(getId()));
+		classLabel.setBorder(new MarginBorder(new Insets(5)));
 		
 		UMLClassFigure classFigure = new UMLClassFigure(classLabel);
-		if(isSelected()){
+		if (isSelected()) {
 			classFigure.setBackgroundColor(styler.getSelectedBackgroundColor());
-		}else{
+		} else {
 			classFigure.setBackgroundColor(styler.getBackgroundColor());
 		}
-		
+
 		if (attributes != null && attributes.size() > 0) {
 			boolean displaybleAttributesFound = false;
 			for (ChildElementTemplate childElement : attributes) {
@@ -225,7 +230,11 @@ public class MyTopLevelElement implements TopLevelElement {
 	@Override
 	public void setFilters(List<ClassDiagramFilter> filters) {
 		this.filters = filters;
-
+	}
+	
+	@Override
+	public void setActions(List<ClassDiagramAction> actions){
+		this.actions = actions;
 	}
 
 	@Override

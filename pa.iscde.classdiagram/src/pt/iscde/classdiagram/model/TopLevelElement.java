@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.eclipse.draw2d.IFigure;
 
+import pt.iscde.classdiagram.extensibility.ClassDiagramAction;
 import pt.iscde.classdiagram.extensibility.ClassDiagramFilter;
 import pt.iscde.classdiagram.extensibility.ClassDiagramStyler;
 import pt.iscde.classdiagram.model.types.EModifierType;
@@ -66,4 +67,9 @@ public interface TopLevelElement {
 	public boolean isSelected();
 
 	public void setFilters(List<ClassDiagramFilter> filters);
+
+	public void setActions(List<ClassDiagramAction> actions);
+	
+	
 }
+

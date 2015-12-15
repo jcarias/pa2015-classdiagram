@@ -26,6 +26,7 @@ import org.eclipse.zest.layouts.algorithms.CompositeLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.HorizontalShift;
 import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 
+import pt.iscde.classdiagram.extensibility.ClassDiagramAction;
 import pt.iscde.classdiagram.extensibility.ClassDiagramFilter;
 import pt.iscde.classdiagram.extensibility.actions.FilterAction;
 import pt.iscde.classdiagram.model.zest.ClassDiagramContentProvider;
@@ -50,11 +51,13 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 	private static ProjectBrowserServices browserServices;
 	private static JavaEditorServices javaEditorServices;
 
+	private List<ClassDiagramAction> actions;
 	private List<ClassDiagramFilter> filters;
 
 	private GraphViewer viewer;
 	private NodeModelContentProvider model;
 	private Map<String, Image> imageMap;
+	private MenuManager mm;
 
 	public ClassDiagramView() {
 		instance = this;
@@ -69,7 +72,6 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 	public static ClassDiagramView getInstance() {
 		if (instance == null)
 			pidescoServices.openView(VIEW_ID);
-
 		return instance;
 	}
 
@@ -85,18 +87,11 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 		LayoutAlgorithm layout = setLayout();
 		viewer.setLayoutAlgorithm(layout, true);
 		viewer.applyLayout();
-
-		createMenu();
-
-		viewer.addSelectionChangedListener(new ClassDiagramGraphViewerSelectionChangedListener(viewer));
 		
-	}
-
-	
-	private void createMenu() {
 		mm = new MenuManager();
-		viewer.getGraphControl().setMenu(mm.createContextMenu(viewer.getGraphControl()));
-		mm.add(new RefreshAction(viewer));
+		ClassDiagramMenuHelper.createMenu(viewer, mm);
+		viewer.addSelectionChangedListener(new ClassDiagramGraphViewerSelectionChangedListener(viewer, mm));
+		
 	}
 
 	private LayoutAlgorithm setLayout() {
@@ -111,8 +106,7 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 	}
 
 	List<String> metodos = new ArrayList<String>();
-	private MenuManager mm;
-
+	
 	@Override
 	public void doubleClick(SourceElement element) {
 		if (element.isPackage()) {
@@ -129,17 +123,6 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 			viewer.setInput(model.getNodes());
 		} else if (element.isClass()) {
 			actualizaDiagrama(element.getFile());
-		}
-	}
-
-	private void updateMenu() {
-		if (filters != null && filters.size() > 0) {
-			mm.add(new Separator());
-			for (ClassDiagramFilter classDiagramFilter : filters) {
-				mm.add(new FilterAction(classDiagramFilter, viewer));
-			}
-		} else {
-			createMenu();
 		}
 	}
 
@@ -226,8 +209,44 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 			model.clearFilters();
 			filters = new ArrayList<ClassDiagramFilter>();
 		}
-		updateMenu();
+		ClassDiagramMenuHelper.addFiltersToMenu(viewer, filters, mm);
 		viewer.refresh();
 		viewer.setInput(model.getNodes());
 	}
+	
+	public void toggleActions(boolean activate) {
+		if (activate) {
+			IExtensionRegistry extRegistry = Platform.getExtensionRegistry();
+			IExtensionPoint extensionPoint = extRegistry.getExtensionPoint("pt.iscte.pidesco.classdiagram.PopupAction");
+			IExtension[] extensions = extensionPoint.getExtensions();
+			for (IExtension e : extensions) {
+				IConfigurationElement[] confElements = e.getConfigurationElements();
+				for (IConfigurationElement c : confElements) {
+					try {
+						Object o = c.createExecutableExtension("action");
+						if (o instanceof ClassDiagramFilter) {
+							ClassDiagramAction action = (ClassDiagramAction) o;
+							actions.add(action);
+						}
+
+					} catch (CoreException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+			model.addFilters(filters);
+
+		} else {
+			model.clearFilters();
+			filters = new ArrayList<ClassDiagramFilter>();
+		}
+		ClassDiagramMenuHelper.addFiltersToMenu(viewer, filters, mm);
+		viewer.refresh();
+		viewer.setInput(model.getNodes());
+	}
+	
+	
+	
+	
+	
 }

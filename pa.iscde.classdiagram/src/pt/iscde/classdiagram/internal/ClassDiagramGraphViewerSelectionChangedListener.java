@@ -1,5 +1,6 @@
 package pt.iscde.classdiagram.internal;
 
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -10,9 +11,12 @@ import pt.iscde.classdiagram.model.TopLevelElement;
 class ClassDiagramGraphViewerSelectionChangedListener implements ISelectionChangedListener {
 
 	private GraphViewer viewer;
+	private MenuManager mm;
+	ClassDiagramMenuHelper menuHelper;
 
-	public ClassDiagramGraphViewerSelectionChangedListener(GraphViewer viewer) {
+	public ClassDiagramGraphViewerSelectionChangedListener(GraphViewer viewer, MenuManager mm) {
 		this.viewer = viewer;
+		this.mm = mm;
 	}
 
 	@Override
@@ -36,8 +40,11 @@ class ClassDiagramGraphViewerSelectionChangedListener implements ISelectionChang
 			}
 		}
 		
+		//ClassDiagramMenuHelper.createMenu(this.viewer, mm);
+		
 		viewer.refresh(true);
 		
 		System.out.println(((IStructuredSelection)viewer.getSelection()).size());
 	}
+	
 }

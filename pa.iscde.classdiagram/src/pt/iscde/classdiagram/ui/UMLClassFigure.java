@@ -1,5 +1,8 @@
 package pt.iscde.classdiagram.ui;
 
+
+
+import org.eclipse.draw2d.Border;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Label;
@@ -14,11 +17,16 @@ public class UMLClassFigure extends Figure {
 	public UMLClassFigure(Label name) {
 		ToolbarLayout layout = new ToolbarLayout();
 		setLayoutManager(layout);
-		setBorder(new LineBorder(ColorConstants.black, 1));
+		setBorder(getLineBorder());
 		setOpaque(true);
 		add(name);
 		add(attributeFigure);
 		add(methodFigure);
+	}
+	
+	
+	private Border getLineBorder() {
+		return new LineBorder(ColorConstants.black, 1);
 	}
 	
 	public CompartmentFigure getAttributesCompartment() {

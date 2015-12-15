@@ -55,8 +55,29 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn="pt.iscde.classdiagram.extensibility.ClassDiagramFilter:"/>
+                  <meta.attribute kind="java" basedOn=":pt.iscde.classdiagram.extensibility.ClassDiagramFilter"/>
                </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="filterName" type="string" use="required">
+            <annotation>
+               <documentation>
+                  A String containing the filter&apos;s name.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="filterShortDescription" type="string">
+            <annotation>
+               <documentation>
+                  A text containing a short description of the filter. This short description should describe what kind of class elements the filter will not restrict. This text is meant to be used in tootips.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="icon" type="string">
+            <annotation>
+               <documentation>
+                  The filter&apos;s icon. The icon, if set, will be displayed in context menu or in toolbars.
+               </documentation>
             </annotation>
          </attribute>
       </complexType>
