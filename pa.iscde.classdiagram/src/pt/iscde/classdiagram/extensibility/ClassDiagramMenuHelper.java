@@ -35,10 +35,6 @@ public class ClassDiagramMenuHelper {
 				mm.add(new FilterAction(classDiagramFilter, viewer));
 			}
 		}
-		else
-		{
-			createMenu(viewer, new MenuManager());
-		}
 	}
 	
 	public static void addLayoutsToMenu(GraphViewer viewer, List<LayoutAlgorithm> layoutAlgorithms, MenuManager mm){
@@ -48,10 +44,6 @@ public class ClassDiagramMenuHelper {
 				mm.add(new ChangeLayoutAction(viewer, algorithm.toString(), algorithm));
 			}
 		}
-		else
-		{
-			createMenu(viewer, new MenuManager());
-		}
 	}
 	
 	public static void addActionsToMenu(GraphViewer viewer, List<ClassDiagramAction> actions, MenuManager mm){
@@ -60,10 +52,6 @@ public class ClassDiagramMenuHelper {
 			for (ClassDiagramAction action : actions) {
 				mm.add(action);
 			}
-		}
-		else
-		{
-			createMenu(viewer, new MenuManager());
 		}
 	}
 	
