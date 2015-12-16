@@ -14,7 +14,6 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.action.Separator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -29,7 +28,6 @@ import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 import pt.iscde.classdiagram.extensibility.ClassDiagramAction;
 import pt.iscde.classdiagram.extensibility.ClassDiagramFilter;
 import pt.iscde.classdiagram.extensibility.ClassDiagramMenuHelper;
-import pt.iscde.classdiagram.extensibility.actions.FilterAction;
 import pt.iscde.classdiagram.model.zest.ClassDiagramContentProvider;
 import pt.iscde.classdiagram.model.zest.ClassDiagramLabelProvider;
 import pt.iscde.classdiagram.model.zest.NodeModelContentProvider;
@@ -206,12 +204,11 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 			}
 
 			model.addFilters(filters);
-
+			ClassDiagramMenuHelper.addFiltersToMenu(viewer, filters, mm);
 		} else {
 			model.clearFilters();
-			filters = new ArrayList<ClassDiagramFilter>();
+			ClassDiagramMenuHelper.deleteFilters(mm);
 		}
-		ClassDiagramMenuHelper.addFiltersToMenu(viewer, filters, mm);
 		viewer.refresh();
 		viewer.setInput(model.getNodes());
 	}
