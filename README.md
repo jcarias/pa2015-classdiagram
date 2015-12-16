@@ -3,6 +3,6 @@ Projecto PA - Plugin de Diagrama de Classes
 
 O projecto "pa.iscde.classdiagram" é o módulo do PIDESCO responsável pela exibição dos diagramas de classes.
 
-Para mais informações consulte o wiki!
+Para mais informações consulte o [Wiki](https://github.com/jcarias/pa2015-classdiagram/wiki)!
 
 
