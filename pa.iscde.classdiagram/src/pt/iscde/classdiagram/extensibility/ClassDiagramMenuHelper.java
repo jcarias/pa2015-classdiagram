@@ -1,82 +1,71 @@
 package pt.iscde.classdiagram.extensibility;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.SpringLayout;
+
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.zest.core.viewers.GraphViewer;
+import org.eclipse.zest.layouts.LayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 
-public class ClassDiagramMenuHelper implements MouseListener {
+import pt.iscde.classdiagram.extensibility.actions.ChangeLayoutAction;
+import pt.iscde.classdiagram.extensibility.actions.FilterAction;
+import pt.iscde.classdiagram.extensibility.actions.RefreshAction;
+import pt.iscde.classdiagram.model.TopLevelElement;
 
-	@Override
-	public void mouseDoubleClick(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+import org.eclipse.jface.action.Action;
 
+public class ClassDiagramMenuHelper {
+	
+	public static void createMenu(GraphViewer viewer, MenuManager mm) {
+		viewer.getGraphControl().setMenu(mm.createContextMenu(viewer.getGraphControl()));
+		mm.add(new RefreshAction(viewer));
+		//mm.add(new ChangeLayout(viewer, "Spring Layout", new SpringLayoutAlgorithm()));
+		//mm.add(new ChangeLayout(viewer, "Tree Layout", new TreeLayoutAlgorithm()));
 	}
-
-	@Override
-	public void mouseDown(MouseEvent arg0) {
-		if(arg0.button == 3){
-			System.out.println("BOTAO DIREITO");
-			CreateContextMenu(arg0.x, arg0.y);
+	
+	public static void addFiltersToMenu(GraphViewer viewer, List<ClassDiagramFilter> filters, MenuManager mm){
+		if (filters != null && filters.size() > 0) {
+			mm.add(new Separator());
+			for (ClassDiagramFilter classDiagramFilter : filters) {
+				mm.add(new FilterAction(classDiagramFilter, viewer));
+			}
 		}
-
-	}
-
-	@Override
-	public void mouseUp(MouseEvent arg0) {
-
+		else
+		{
+			createMenu(viewer, new MenuManager());
+		}
 	}
 	
-	public static Display getDisplay() {
-	      Display display = Display.getCurrent();
-	      //may be null if outside the UI thread
-	      if (display == null)
-	         display = Display.getDefault();
-	      return display;		
-	   }
-
-	
-	
-	public void CreateContextMenu(int positionX, int positionY){
-//		Display display = getDisplay();
-//		Shell shell = new Shell(display, SWT.SHELL_TRIM | SWT.CENTER);
-//
-//        Menu menuBar = new Menu(shell, SWT.BAR);
-//        //org.eclipse.swt.widgets.
-//        MenuItem cascadeFileMenu = new MenuItem(menuBar, SWT.CASCADE);
-//        cascadeFileMenu.setText("&File");
-//        
-//        Menu fileMenu = new Menu(shell, SWT.DROP_DOWN);
-//        cascadeFileMenu.setMenu(fileMenu);
-//
-//        //MenuItem exitItem = new MenuItem(fileMenu, SWT.PUSH);
-//        //exitItem.setText("&Exit");
-//        //shell.setMenuBar(menuBar);
-//
-//        shell.setText("Simple menu");
-//        shell.setSize(300, 200);
-//        shell.setLocation(positionX, positionY);
-//        shell.open();
-//
-//        while (!shell.isDisposed()) {
-//          if (!display.readAndDispatch()) {
-//            display.sleep();
-//          }
-//        }
-		//MenuManager mm = new MenuManager();
-		//viewer.getGraphControl().setMenu(mm.createContextMenu(viewer.getGraphControl()));
-		
-		
+	public static void addLayoutsToMenu(GraphViewer viewer, List<LayoutAlgorithm> layoutAlgorithms, MenuManager mm){
+		if (layoutAlgorithms != null && layoutAlgorithms.size() > 0) {
+			mm.add(new Separator());
+			for (LayoutAlgorithm algorithm : layoutAlgorithms) {
+				mm.add(new ChangeLayoutAction(viewer, algorithm.toString(), algorithm));
+			}
+		}
+		else
+		{
+			createMenu(viewer, new MenuManager());
+		}
 	}
 	
-
+	public static void addActionsToMenu(GraphViewer viewer, List<ClassDiagramAction> actions, MenuManager mm){
+		if (actions != null && actions.size() > 0) {
+			mm.add(new Separator());
+			for (ClassDiagramAction action : actions) {
+				mm.add(action);
+			}
+		}
+		else
+		{
+			createMenu(viewer, new MenuManager());
+		}
+	}
+	
+	
 }

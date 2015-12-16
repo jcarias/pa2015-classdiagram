@@ -1,28 +1,35 @@
 package pt.iscde.classdiagram.internal;
 
+import java.util.List;
+
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.zest.core.viewers.GraphViewer;
 
+import pt.iscde.classdiagram.extensibility.ClassDiagramAction;
 import pt.iscde.classdiagram.model.TopLevelElement;
 
 class ClassDiagramGraphViewerSelectionChangedListener implements ISelectionChangedListener {
 
 	private GraphViewer viewer;
 	private MenuManager mm;
-	ClassDiagramMenuHelper menuHelper;
+	private List<ClassDiagramAction> actions;
 
-	public ClassDiagramGraphViewerSelectionChangedListener(GraphViewer viewer, MenuManager mm) {
+	public ClassDiagramGraphViewerSelectionChangedListener(GraphViewer viewer, MenuManager mm, List<ClassDiagramAction> actions) {
 		this.viewer = viewer;
 		this.mm = mm;
+		this.actions = actions;
 	}
 
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
+		setActionSelectedElement(null);
+		
 		IStructuredSelection selection = (IStructuredSelection) event.getSelection();
 		Object[] nodeElements = viewer.getNodeElements();
+		
 		for (Object nodeElement : nodeElements) {
 			if (nodeElement instanceof TopLevelElement) {
 				TopLevelElement element = (TopLevelElement) nodeElement;
@@ -30,21 +37,25 @@ class ClassDiagramGraphViewerSelectionChangedListener implements ISelectionChang
 			}
 		}
 		
-		if (selection.size() < 1) {
-
-		} else {
+		if (selection.size() > 0) {
 			Object selectedElement = selection.getFirstElement();
 			if (selectedElement instanceof TopLevelElement) {
 				TopLevelElement element = (TopLevelElement) selectedElement;
 				element.setSelected(!element.isSelected());
+				setActionSelectedElement(element);
 			}
 		}
-		
-		//ClassDiagramMenuHelper.createMenu(this.viewer, mm);
-		
 		viewer.refresh(true);
-		
-		System.out.println(((IStructuredSelection)viewer.getSelection()).size());
 	}
+	
+	
+	private void setActionSelectedElement(TopLevelElement element){
+		if(actions != null){
+			for (ClassDiagramAction action : actions) {
+				action.setSelectedElement(element);
+			}
+		}
+	}
+	
 	
 }

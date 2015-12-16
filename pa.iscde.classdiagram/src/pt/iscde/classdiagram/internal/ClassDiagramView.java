@@ -28,6 +28,7 @@ import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 
 import pt.iscde.classdiagram.extensibility.ClassDiagramAction;
 import pt.iscde.classdiagram.extensibility.ClassDiagramFilter;
+import pt.iscde.classdiagram.extensibility.ClassDiagramMenuHelper;
 import pt.iscde.classdiagram.extensibility.actions.FilterAction;
 import pt.iscde.classdiagram.model.zest.ClassDiagramContentProvider;
 import pt.iscde.classdiagram.model.zest.ClassDiagramLabelProvider;
@@ -67,6 +68,7 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 		browserServices.addListener(this);
 		javaEditorServices.addListener(this);
 		filters = new ArrayList<ClassDiagramFilter>();
+		actions = new ArrayList<ClassDiagramAction>();
 	}
 
 	public static ClassDiagramView getInstance() {
@@ -90,8 +92,8 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 		
 		mm = new MenuManager();
 		ClassDiagramMenuHelper.createMenu(viewer, mm);
-		viewer.addSelectionChangedListener(new ClassDiagramGraphViewerSelectionChangedListener(viewer, mm));
-		
+		loadActions(true);
+		viewer.addSelectionChangedListener(new ClassDiagramGraphViewerSelectionChangedListener(viewer, mm, actions));
 	}
 
 	private LayoutAlgorithm setLayout() {
@@ -214,7 +216,7 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 		viewer.setInput(model.getNodes());
 	}
 	
-	public void toggleActions(boolean activate) {
+	public void loadActions(boolean activate) {
 		if (activate) {
 			IExtensionRegistry extRegistry = Platform.getExtensionRegistry();
 			IExtensionPoint extensionPoint = extRegistry.getExtensionPoint("pt.iscte.pidesco.classdiagram.PopupAction");
@@ -224,7 +226,7 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 				for (IConfigurationElement c : confElements) {
 					try {
 						Object o = c.createExecutableExtension("action");
-						if (o instanceof ClassDiagramFilter) {
+						if (o instanceof ClassDiagramAction) {
 							ClassDiagramAction action = (ClassDiagramAction) o;
 							actions.add(action);
 						}
@@ -234,13 +236,10 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 					}
 				}
 			}
-			model.addFilters(filters);
-
 		} else {
-			model.clearFilters();
-			filters = new ArrayList<ClassDiagramFilter>();
+			actions = new ArrayList<ClassDiagramAction>();
 		}
-		ClassDiagramMenuHelper.addFiltersToMenu(viewer, filters, mm);
+		ClassDiagramMenuHelper.addActionsToMenu(viewer, actions, mm);
 		viewer.refresh();
 		viewer.setInput(model.getNodes());
 	}

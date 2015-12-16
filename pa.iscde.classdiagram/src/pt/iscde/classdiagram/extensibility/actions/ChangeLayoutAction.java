@@ -1,4 +1,4 @@
-package pt.iscde.classdiagram.internal;
+package pt.iscde.classdiagram.extensibility.actions;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.zest.core.viewers.GraphViewer;

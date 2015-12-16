@@ -3,7 +3,6 @@ package pt.iscde.classdiagram.extensibility.actions;
 import org.eclipse.zest.core.viewers.GraphViewer;
 
 import pt.iscde.classdiagram.extensibility.ClassDiagramFilter;
-import pt.iscde.classdiagram.internal.RefreshAction;
 
 public class FilterAction extends RefreshAction{
 	

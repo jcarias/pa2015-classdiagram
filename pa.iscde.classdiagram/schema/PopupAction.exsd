@@ -49,13 +49,13 @@
 
    <element name="PopupAction">
       <complexType>
-         <attribute name="Action" type="string">
+         <attribute name="action" type="string" use="required">
             <annotation>
                <documentation>
                   The amazing popup that barely works and will definately blow your mind
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":pt.iscde.classdiagram.extensibility.ClassDiagramAction"/>
+                  <meta.attribute kind="java" basedOn="pt.iscde.classdiagram.extensibility.ClassDiagramAction:"/>
                </appinfo>
             </annotation>
          </attribute>
