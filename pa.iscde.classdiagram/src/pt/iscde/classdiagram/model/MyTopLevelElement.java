@@ -91,12 +91,17 @@ public class MyTopLevelElement implements TopLevelElement {
 					return null;
 			}
 
+		Label stereotype = getStereoType();
 		Label classLabel = new Label(getName(), getClassIcon());
 		classLabel.setFont(new Font(null, "Arial", 12, SWT.BOLD));
 		classLabel.setToolTip(new ToolTipFigure(getId()));
-		classLabel.setBorder(new MarginBorder(new Insets(5)));
-		
-		UMLClassFigure classFigure = new UMLClassFigure(classLabel);
+		if (stereotype != null) {
+			classLabel.setBorder(new MarginBorder(new Insets(0, 5, 5, 5)));
+		} else {
+			classLabel.setBorder(new MarginBorder(new Insets(5)));
+		}
+
+		UMLClassFigure classFigure = new UMLClassFigure(classLabel, stereotype);
 		if (isSelected()) {
 			classFigure.setBackgroundColor(styler.getSelectedBackgroundColor());
 		} else {
@@ -104,34 +109,19 @@ public class MyTopLevelElement implements TopLevelElement {
 		}
 
 		if (attributes != null && attributes.size() > 0) {
-			boolean displaybleAttributesFound = false;
 			for (ChildElementTemplate childElement : attributes) {
 				if (canBeRedered(childElement)) {
 					classFigure.getAttributesCompartment().add(childElement.getLabel());
-					displaybleAttributesFound = true;
 				}
 			}
-
-			if (!displaybleAttributesFound) {
-				classFigure.getAttributesCompartment().add(new Label("", null));
-			}
-		} else {
-			classFigure.getAttributesCompartment().add(new Label("", null));
 		}
 
 		if (methods != null && methods.size() > 0) {
-			boolean displaybleMethodsFound = false;
 			for (ChildElementTemplate childElement : methods) {
 				if (canBeRedered(childElement)) {
 					classFigure.getMethodsCompartment().add(childElement.getLabel());
-					displaybleMethodsFound = true;
 				}
 			}
-			if (!displaybleMethodsFound) {
-				classFigure.getMethodsCompartment().add(new Label("", null));
-			}
-		} else {
-			classFigure.getMethodsCompartment().add(new Label("", null));
 		}
 
 		classFigure.setSize(-1, -1);
@@ -229,7 +219,7 @@ public class MyTopLevelElement implements TopLevelElement {
 	public void setFilters(List<ClassDiagramFilter> filters) {
 		this.filters = filters;
 	}
-	
+
 	@Override
 	public void setSelected(boolean value) {
 		this.selected = value;
@@ -238,5 +228,26 @@ public class MyTopLevelElement implements TopLevelElement {
 	@Override
 	public boolean isSelected() {
 		return this.selected;
+	}
+
+	private Label getStereoType() {
+		Label sterotype = new Label();
+		sterotype.setFont(new Font(null, "Arial", 12, SWT.ITALIC));
+		sterotype.setBorder(new MarginBorder(new Insets(5, 5, 0, 5)));
+		switch (getClassType()) {
+		case CLASS:
+		case SUPERCLASS:
+			return null;
+		case INTERFACE:
+			sterotype.setText("<<interface>>");
+			break;
+		case ENUM:
+			sterotype.setText("<<enum>>");
+			break;
+		default:
+			return null;
+		}
+
+		return sterotype;
 	}
 }

@@ -1,7 +1,5 @@
 package pt.iscde.classdiagram.ui;
 
-
-
 import org.eclipse.draw2d.Border;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
@@ -14,21 +12,23 @@ public class UMLClassFigure extends Figure {
 	private CompartmentFigure attributeFigure = new CompartmentFigure();
 	private CompartmentFigure methodFigure = new CompartmentFigure();
 
-	public UMLClassFigure(Label name) {
+	public UMLClassFigure(Label name, Label sterotype) {
 		ToolbarLayout layout = new ToolbarLayout();
 		setLayoutManager(layout);
 		setBorder(getLineBorder());
 		setOpaque(true);
+		if (sterotype != null) {
+			add(sterotype);
+		}
 		add(name);
 		add(attributeFigure);
 		add(methodFigure);
 	}
-	
-	
+
 	private Border getLineBorder() {
-		return new LineBorder(ColorConstants.black, 1);
+		return new LineBorder(ColorConstants.black);
 	}
-	
+
 	public CompartmentFigure getAttributesCompartment() {
 		return attributeFigure;
 	}

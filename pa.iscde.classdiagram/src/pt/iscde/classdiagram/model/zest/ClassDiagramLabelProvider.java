@@ -24,6 +24,11 @@ public class ClassDiagramLabelProvider extends LabelProvider implements ISelfSty
 
 	@Override
 	public String getText(Object element) {
+		if (element instanceof TopLevelElement) {
+			TopLevelElement topLevelElement = (TopLevelElement) element;
+			return topLevelElement.getName();
+		}
+		
 		if (element instanceof EntityConnectionData) {
 			EntityConnectionData data = (EntityConnectionData) element;
 
