@@ -2,7 +2,6 @@ package pt.iscde.classdiagram.internal;
 
 import java.util.List;
 
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -14,12 +13,10 @@ import pt.iscde.classdiagram.model.TopLevelElement;
 class ClassDiagramGraphViewerSelectionChangedListener implements ISelectionChangedListener {
 
 	private GraphViewer viewer;
-	private MenuManager mm;
 	private List<ClassDiagramAction> actions;
 
-	public ClassDiagramGraphViewerSelectionChangedListener(GraphViewer viewer, MenuManager mm, List<ClassDiagramAction> actions) {
+	public ClassDiagramGraphViewerSelectionChangedListener(GraphViewer viewer,  List<ClassDiagramAction> actions) {
 		this.viewer = viewer;
-		this.mm = mm;
 		this.actions = actions;
 	}
 

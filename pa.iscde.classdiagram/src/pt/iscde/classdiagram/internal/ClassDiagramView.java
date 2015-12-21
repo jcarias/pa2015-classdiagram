@@ -13,7 +13,6 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -28,6 +27,7 @@ import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 import pt.iscde.classdiagram.extensibility.ClassDiagramAction;
 import pt.iscde.classdiagram.extensibility.ClassDiagramFilter;
 import pt.iscde.classdiagram.extensibility.ClassDiagramMenuHelper;
+import pt.iscde.classdiagram.extensibility.actions.RefreshAction;
 import pt.iscde.classdiagram.model.zest.ClassDiagramContentProvider;
 import pt.iscde.classdiagram.model.zest.ClassDiagramLabelProvider;
 import pt.iscde.classdiagram.model.zest.NodeModelContentProvider;
@@ -56,7 +56,7 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 	private GraphViewer viewer;
 	private NodeModelContentProvider model;
 	private Map<String, Image> imageMap;
-	private MenuManager mm;
+	ClassDiagramMenuHelper menuHelper;
 
 	public ClassDiagramView() {
 		instance = this;
@@ -88,10 +88,12 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 		viewer.setLayoutAlgorithm(layout, true);
 		viewer.applyLayout();
 		
-		mm = new MenuManager();
-		ClassDiagramMenuHelper.createMenu(viewer, mm);
-		loadActions(true);
-		viewer.addSelectionChangedListener(new ClassDiagramGraphViewerSelectionChangedListener(viewer, mm, actions));
+		menuHelper = new ClassDiagramMenuHelper(viewer);
+		menuHelper.addDefaultAction(new RefreshAction(viewer));
+		viewer.getGraphControl().setMenu(menuHelper.getMenu());
+		
+		loadActions();
+		viewer.addSelectionChangedListener(new ClassDiagramGraphViewerSelectionChangedListener(viewer, actions));
 	}
 
 	private LayoutAlgorithm setLayout() {
@@ -183,6 +185,7 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 	}
 
 	public void toggleFilters(boolean activate) {
+		filters = new ArrayList<>();
 		if (activate) {
 			IExtensionRegistry extRegistry = Platform.getExtensionRegistry();
 			IExtensionPoint extensionPoint = extRegistry.getExtensionPoint("pt.iscte.pidesco.classdiagram.Filter");
@@ -204,45 +207,36 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 			}
 
 			model.addFilters(filters);
-			ClassDiagramMenuHelper.addFiltersToMenu(viewer, filters, mm);
 		} else {
 			model.clearFilters();
-			ClassDiagramMenuHelper.deleteFilters(mm);
 		}
+		menuHelper.setFilters(filters);
 		viewer.refresh();
 		viewer.setInput(model.getNodes());
 	}
 	
-	public void loadActions(boolean activate) {
-		if (activate) {
-			IExtensionRegistry extRegistry = Platform.getExtensionRegistry();
-			IExtensionPoint extensionPoint = extRegistry.getExtensionPoint("pt.iscte.pidesco.classdiagram.PopupAction");
-			IExtension[] extensions = extensionPoint.getExtensions();
-			for (IExtension e : extensions) {
-				IConfigurationElement[] confElements = e.getConfigurationElements();
-				for (IConfigurationElement c : confElements) {
-					try {
-						Object o = c.createExecutableExtension("action");
-						if (o instanceof ClassDiagramAction) {
-							ClassDiagramAction action = (ClassDiagramAction) o;
-							actions.add(action);
-						}
+	public void loadActions() {
 
-					} catch (CoreException e1) {
-						e1.printStackTrace();
+		IExtensionRegistry extRegistry = Platform.getExtensionRegistry();
+		IExtensionPoint extensionPoint = extRegistry.getExtensionPoint("pt.iscte.pidesco.classdiagram.PopupAction");
+		IExtension[] extensions = extensionPoint.getExtensions();
+		for (IExtension e : extensions) {
+			IConfigurationElement[] confElements = e.getConfigurationElements();
+			for (IConfigurationElement c : confElements) {
+				try {
+					Object o = c.createExecutableExtension("action");
+					if (o instanceof ClassDiagramAction) {
+						ClassDiagramAction action = (ClassDiagramAction) o;
+						actions.add(action);
 					}
+
+				} catch (CoreException e1) {
+					e1.printStackTrace();
 				}
 			}
-		} else {
-			actions = new ArrayList<ClassDiagramAction>();
 		}
-		ClassDiagramMenuHelper.addActionsToMenu(viewer, actions, mm);
-		viewer.refresh();
-		viewer.setInput(model.getNodes());
+	
+		menuHelper.setActions(actions);;
 	}
-	
-	
-	
-	
-	
+
 }

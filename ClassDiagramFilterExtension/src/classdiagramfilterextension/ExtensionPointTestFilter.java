@@ -10,6 +10,13 @@ import pt.iscde.classdiagram.model.types.ETopElementType;
 public class ExtensionPointTestFilter implements ClassDiagramFilter {
 
 	private boolean active;
+	
+	
+
+	public ExtensionPointTestFilter() {
+		super();
+		this.active = true;
+	}
 
 	@Override
 	public boolean acceptTopElement(ETopElementType type, String name, EModifierType visibility, Set<EModifierType> modifiers) {
@@ -18,7 +25,7 @@ public class ExtensionPointTestFilter implements ClassDiagramFilter {
 
 	@Override
 	public boolean acceptCildElement(EChildElementType type, String name, EModifierType visibility, Set<EModifierType> modifiers, String returnType) {
-		return visibility.equals(EModifierType.PUBLIC);
+		return visibility!=null && visibility.equals(EModifierType.PUBLIC);
 	}
 
 	@Override

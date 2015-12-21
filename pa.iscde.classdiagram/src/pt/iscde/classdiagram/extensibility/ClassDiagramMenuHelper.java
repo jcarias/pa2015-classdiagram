@@ -4,24 +4,53 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.zest.core.viewers.GraphViewer;
-import org.eclipse.zest.layouts.LayoutAlgorithm;
 
-import pt.iscde.classdiagram.extensibility.actions.ChangeLayoutAction;
 import pt.iscde.classdiagram.extensibility.actions.FilterAction;
-import pt.iscde.classdiagram.extensibility.actions.RefreshAction;
 
 public class ClassDiagramMenuHelper {
 
-	public static void createMenu(GraphViewer viewer, MenuManager mm) {
-		viewer.getGraphControl().setMenu(mm.createContextMenu(viewer.getGraphControl()));
-		mm.add(new RefreshAction(viewer));
+	private List<Action> defaultActions;
+	private List<ClassDiagramFilter> filters;
+	private List<ClassDiagramAction> actions;
+	private GraphViewer viewer;
+	private MenuManager mm;
+
+	public ClassDiagramMenuHelper(GraphViewer viewer) {
+		super();
+		defaultActions = new ArrayList<Action>();
+		filters = new ArrayList<ClassDiagramFilter>();
+		actions = new ArrayList<ClassDiagramAction>();
+
+		this.viewer = viewer;
+		this.mm = new MenuManager();
 	}
 
-	public static void addFiltersToMenu(GraphViewer viewer, List<ClassDiagramFilter> filters, MenuManager mm) {
+	public Menu getMenu() {
+		mm.createContextMenu(viewer.getGraphControl());
+		upadateManager();
+		return mm.getMenu();
+	}
+	
+	private void upadateManager() {
+		mm.removeAll();
+		addDefaultActionsToMenu();
+		addFiltersToMenu();
+		addActionsToMenu();
+	}
+
+	private void addDefaultActionsToMenu() {
+		if (defaultActions != null && defaultActions.size() > 0) {
+			for (Action action : defaultActions) {
+				mm.add(action);
+			}
+		}
+	}
+
+	private void addFiltersToMenu() {
 		if (filters != null && filters.size() > 0) {
 			mm.add(new Separator());
 			for (ClassDiagramFilter classDiagramFilter : filters) {
@@ -32,16 +61,7 @@ public class ClassDiagramMenuHelper {
 		}
 	}
 
-	public static void addLayoutsToMenu(GraphViewer viewer, List<LayoutAlgorithm> layoutAlgorithms, MenuManager mm) {
-		if (layoutAlgorithms != null && layoutAlgorithms.size() > 0) {
-			mm.add(new Separator());
-			for (LayoutAlgorithm algorithm : layoutAlgorithms) {
-				mm.add(new ChangeLayoutAction(viewer, algorithm.toString(), algorithm));
-			}
-		}
-	}
-
-	public static void addActionsToMenu(GraphViewer viewer, List<ClassDiagramAction> actions, MenuManager mm) {
+	private void addActionsToMenu() {
 		if (actions != null && actions.size() > 0) {
 			mm.add(new Separator());
 			for (ClassDiagramAction action : actions) {
@@ -51,18 +71,19 @@ public class ClassDiagramMenuHelper {
 
 	}
 
-	public static void deleteFilters(MenuManager mm) {
-		List<IContributionItem> items = new ArrayList<>();
-		
-		for (IContributionItem item : mm.getItems()) {
-			if (item.getId()!=null && item.getId().startsWith("Filter_")){
-				items.add(item);
-			}
-		}
-		
-		for (IContributionItem item : items) {
-			mm.remove(item);
-		}
+
+	public void addDefaultAction(Action refreshAction) {
+		defaultActions.add(refreshAction);
+		upadateManager();
 	}
 
+	public void setFilters(List<ClassDiagramFilter> filters) {
+		this.filters = filters;
+		upadateManager();
+	}
+
+	public void setActions(List<ClassDiagramAction> actions) {
+		this.actions = actions;
+		upadateManager();
+	}
 }
