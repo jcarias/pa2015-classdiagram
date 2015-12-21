@@ -9,12 +9,6 @@ public abstract class ClassDiagramAction extends Action {
 
 	protected TopLevelElement selectedElement;
 	
-	public abstract void run();
-	
-	public abstract String getName();
-	
-	public abstract String getTooltipText();
-	
 	public final void setSelectedElement(TopLevelElement selectedElement){
 		this.selectedElement = selectedElement;
 	}

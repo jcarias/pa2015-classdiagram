@@ -59,6 +59,13 @@
                </appinfo>
             </annotation>
          </attribute>
+         <attribute name="Action_Text" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Texto a ser apresentado no Menu para a Action
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 

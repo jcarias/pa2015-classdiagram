@@ -225,8 +225,10 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 			for (IConfigurationElement c : confElements) {
 				try {
 					Object o = c.createExecutableExtension("action");
+					String actionText = (String) c.getAttribute("Action_Text");
 					if (o instanceof ClassDiagramAction) {
 						ClassDiagramAction action = (ClassDiagramAction) o;
+						action.setText(actionText);
 						actions.add(action);
 					}
 
