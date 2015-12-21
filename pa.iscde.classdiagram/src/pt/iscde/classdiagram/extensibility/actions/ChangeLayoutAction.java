@@ -2,11 +2,7 @@ package pt.iscde.classdiagram.extensibility.actions;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.zest.core.viewers.GraphViewer;
-import org.eclipse.zest.core.viewers.internal.AbstractStructuredGraphViewer;
 import org.eclipse.zest.layouts.LayoutAlgorithm;
-import org.eclipse.zest.layouts.algorithms.CompositeLayoutAlgorithm;
-import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
-import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 
 public class ChangeLayoutAction extends Action {
 	
@@ -25,5 +21,4 @@ public class ChangeLayoutAction extends Action {
 		viewer.refresh();
 		viewer.applyLayout();
 	}
-
 }

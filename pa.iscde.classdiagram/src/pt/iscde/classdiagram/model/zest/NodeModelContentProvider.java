@@ -6,6 +6,7 @@ import java.util.List;
 import pt.iscde.classdiagram.extensibility.ClassDiagramFilter;
 import pt.iscde.classdiagram.model.MyConnection;
 import pt.iscde.classdiagram.model.MyTopLevelElement;
+import pt.iscde.classdiagram.model.TopLevelElement;
 
 public class NodeModelContentProvider {
 	private List<MyConnection> connections;
@@ -40,8 +41,13 @@ public class NodeModelContentProvider {
 			}
 		}
 		if(nodes!=null){
-			for (MyTopLevelElement element : nodes) {
+			for (TopLevelElement element : nodes) {
 				element.setFilters(this.filters);
+				if(!element.getConnectedTo().isEmpty()){
+					for (TopLevelElement connectedElem : element.getConnectedTo()) {
+						connectedElem.setFilters(filters);
+					}
+				}
 			}
 		}
 	}
@@ -53,6 +59,11 @@ public class NodeModelContentProvider {
 		if(nodes!=null){
 			for (MyTopLevelElement element : nodes) {
 				element.setFilters(filters);
+				if(!element.getConnectedTo().isEmpty()){
+					for (TopLevelElement connectedElem : element.getConnectedTo()) {
+						connectedElem.setFilters(filters);
+					}
+				}
 			}
 		}
 	}
