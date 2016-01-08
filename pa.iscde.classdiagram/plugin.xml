@@ -3,12 +3,10 @@
 <plugin>
    <extension-point id="Filter" name="filter" schema="schema/Filter.exsd"/>
    <extension-point id="PopupAction" name="popupAction" schema="schema/PopupAction.exsd"/>
-<<<<<<< HEAD
    <extension-point id="FilterV2" name="filterV2" schema="schema/filterV2.exsd"/>
-=======
    <extension-point id="Styler" name="styler" schema="schema/Styler.exsd"/>
    <extension-point id="LayoutAlgorithm" name="layoutAlgorithm" schema="schema/LayoutAlgorithms.exsd"/>
->>>>>>> origin/master
+
    <extension
          id="classDiagram"
          name="Diagrama de Classes"

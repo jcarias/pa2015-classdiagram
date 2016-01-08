@@ -10,10 +10,8 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.zest.core.viewers.GraphViewer;
 import org.eclipse.zest.layouts.LayoutAlgorithm;
 import org.eclipse.zest.layouts.LayoutStyles;
-import org.eclipse.zest.layouts.algorithms.AbstractLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.CompositeLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.HorizontalShift;
-import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 
 import pt.iscde.classdiagram.extensibility.actions.ChangeLayoutAction;
 import pt.iscde.classdiagram.extensibility.actions.FilterAction;

@@ -53,12 +53,9 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 	private static JavaEditorServices javaEditorServices;
 
 	private List<ClassDiagramAction> actions;
-<<<<<<< HEAD
 	private List<MyClassDiagramFilter> filters;
-=======
-	private List<ClassDiagramFilter> filters;
 	private List<ILayoutExtender> layouts;
->>>>>>> origin/master
+
 
 	private GraphViewer viewer;
 	private NodeModelContentProvider model;
@@ -249,11 +246,6 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 				}
 			}
 		}
-<<<<<<< HEAD
-
-		menuHelper.setActions(actions);
-		;
-=======
 	
 		menuHelper.setActions(actions);
 	}
@@ -270,7 +262,6 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 			for (IConfigurationElement c : confElements) {
 				try {
 					Object o = c.createExecutableExtension("Layout");
-					String layoutText = (String) c.getAttribute("layoutName");
 					if (o instanceof ILayoutExtender) {
 						ILayoutExtender layout = (ILayoutExtender) o;
 						layouts.add(layout);
@@ -285,7 +276,6 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 		menuHelper.setLayouts(layouts);
 		}
 		catch(Exception ex){ex.printStackTrace();}
->>>>>>> origin/master
 	}
 
 }
