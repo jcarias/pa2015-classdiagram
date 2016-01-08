@@ -15,8 +15,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 
-import pt.iscde.classdiagram.extensibility.ClassDiagramFilter;
 import pt.iscde.classdiagram.extensibility.ClassDiagramStyler;
+import pt.iscde.classdiagram.internal.MyClassDiagramFilter;
 import pt.iscde.classdiagram.model.types.EModifierType;
 import pt.iscde.classdiagram.model.types.ETopElementType;
 import pt.iscde.classdiagram.ui.ToolTipFigure;
@@ -34,7 +34,7 @@ public class MyTopLevelElement implements TopLevelElement {
 	private Set<EModifierType> modifiers;
 
 	private Map<String, Image> imageMap;
-	private List<ClassDiagramFilter> filters;
+	private List<MyClassDiagramFilter> filters;
 	private boolean selected;
 
 	public MyTopLevelElement(String id, String name, ETopElementType classType, Map<String, Image> imageMap) {
@@ -86,7 +86,7 @@ public class MyTopLevelElement implements TopLevelElement {
 	@Override
 	public IFigure getFigure(ClassDiagramStyler styler) {
 		if (filters != null)
-			for (ClassDiagramFilter filter : filters) {
+			for (MyClassDiagramFilter filter : filters) {
 				if (filter.isActive() && !filter.acceptTopElement(classType, name, accessControlType, modifiers))
 					return null;
 			}
@@ -131,7 +131,7 @@ public class MyTopLevelElement implements TopLevelElement {
 
 	private boolean canBeRedered(ChildElementTemplate childElement) {
 		if (filters != null) {
-			for (ClassDiagramFilter filter : filters) {
+			for (MyClassDiagramFilter filter : filters) {
 				if (filter.isActive())
 					return filter.acceptCildElement(childElement.getElementType(), childElement.getName(), childElement.getAccessControlType(), childElement.getModifiers(), childElement.getReturnType());
 				else
@@ -216,7 +216,7 @@ public class MyTopLevelElement implements TopLevelElement {
 	}
 
 	@Override
-	public void setFilters(List<ClassDiagramFilter> filters) {
+	public void setFilters(List<MyClassDiagramFilter> filters) {
 		this.filters = filters;
 	}
 
@@ -250,4 +250,10 @@ public class MyTopLevelElement implements TopLevelElement {
 
 		return sterotype;
 	}
+
+	@Override
+	public EModifierType getAccessControlType() {
+		return accessControlType;
+	}
+
 }

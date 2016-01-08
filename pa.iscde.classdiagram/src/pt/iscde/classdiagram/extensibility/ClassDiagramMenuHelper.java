@@ -10,11 +10,12 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.zest.core.viewers.GraphViewer;
 
 import pt.iscde.classdiagram.extensibility.actions.FilterAction;
+import pt.iscde.classdiagram.internal.MyClassDiagramFilter;
 
 public class ClassDiagramMenuHelper {
 
 	private List<Action> defaultActions;
-	private List<ClassDiagramFilter> filters;
+	private List<MyClassDiagramFilter> filters;
 	private List<ClassDiagramAction> actions;
 	private GraphViewer viewer;
 	private MenuManager mm;
@@ -22,7 +23,7 @@ public class ClassDiagramMenuHelper {
 	public ClassDiagramMenuHelper(GraphViewer viewer) {
 		super();
 		defaultActions = new ArrayList<Action>();
-		filters = new ArrayList<ClassDiagramFilter>();
+		filters = new ArrayList<MyClassDiagramFilter>();
 		actions = new ArrayList<ClassDiagramAction>();
 
 		this.viewer = viewer;
@@ -53,7 +54,7 @@ public class ClassDiagramMenuHelper {
 	private void addFiltersToMenu() {
 		if (filters != null && filters.size() > 0) {
 			mm.add(new Separator());
-			for (ClassDiagramFilter classDiagramFilter : filters) {
+			for (MyClassDiagramFilter classDiagramFilter : filters) {
 				Action filterAction = new FilterAction(classDiagramFilter, viewer);
 				filterAction.setId("Filter_" + classDiagramFilter.hashCode());
 				mm.add(filterAction);
@@ -77,7 +78,7 @@ public class ClassDiagramMenuHelper {
 		upadateManager();
 	}
 
-	public void setFilters(List<ClassDiagramFilter> filters) {
+	public void setFilters(List<MyClassDiagramFilter> filters) {
 		this.filters = filters;
 		upadateManager();
 	}

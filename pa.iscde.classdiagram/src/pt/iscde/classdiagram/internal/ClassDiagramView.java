@@ -25,7 +25,7 @@ import org.eclipse.zest.layouts.algorithms.HorizontalShift;
 import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 
 import pt.iscde.classdiagram.extensibility.ClassDiagramAction;
-import pt.iscde.classdiagram.extensibility.ClassDiagramFilter;
+import pt.iscde.classdiagram.extensibility.ClassDiagramFilterV2;
 import pt.iscde.classdiagram.extensibility.ClassDiagramMenuHelper;
 import pt.iscde.classdiagram.extensibility.actions.RefreshAction;
 import pt.iscde.classdiagram.model.zest.ClassDiagramContentProvider;
@@ -51,7 +51,7 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 	private static JavaEditorServices javaEditorServices;
 
 	private List<ClassDiagramAction> actions;
-	private List<ClassDiagramFilter> filters;
+	private List<MyClassDiagramFilter> filters;
 
 	private GraphViewer viewer;
 	private NodeModelContentProvider model;
@@ -65,7 +65,7 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 		javaEditorServices = ClassDiagramActivator.getInstance().getJavaEditorServices();
 		browserServices.addListener(this);
 		javaEditorServices.addListener(this);
-		filters = new ArrayList<ClassDiagramFilter>();
+		filters = new ArrayList<MyClassDiagramFilter>();
 		actions = new ArrayList<ClassDiagramAction>();
 	}
 
@@ -87,11 +87,11 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 		LayoutAlgorithm layout = setLayout();
 		viewer.setLayoutAlgorithm(layout, true);
 		viewer.applyLayout();
-		
+
 		menuHelper = new ClassDiagramMenuHelper(viewer);
 		menuHelper.addDefaultAction(new RefreshAction(viewer));
 		viewer.getGraphControl().setMenu(menuHelper.getMenu());
-		
+
 		loadActions();
 		viewer.addSelectionChangedListener(new ClassDiagramGraphViewerSelectionChangedListener(viewer, actions));
 	}
@@ -108,7 +108,7 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 	}
 
 	List<String> metodos = new ArrayList<String>();
-	
+
 	@Override
 	public void doubleClick(SourceElement element) {
 		if (element.isPackage()) {
@@ -188,15 +188,18 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 		filters = new ArrayList<>();
 		if (activate) {
 			IExtensionRegistry extRegistry = Platform.getExtensionRegistry();
-			IExtensionPoint extensionPoint = extRegistry.getExtensionPoint("pt.iscte.pidesco.classdiagram.Filter");
+			IExtensionPoint extensionPoint = extRegistry.getExtensionPoint("pt.iscte.pidesco.classdiagram.FilterV2");
 			IExtension[] extensions = extensionPoint.getExtensions();
 			for (IExtension e : extensions) {
 				IConfigurationElement[] confElements = e.getConfigurationElements();
 				for (IConfigurationElement c : confElements) {
 					try {
-						Object o = c.createExecutableExtension("filter");
-						if (o instanceof ClassDiagramFilter) {
-							ClassDiagramFilter filter = (ClassDiagramFilter) o;
+						Object o = c.createExecutableExtension("DiagramFilterImpl");
+						String filterText = (String) c.getAttribute("filterText");
+						String filterShortDescription = (String) c.getAttribute("filterShortDescription");
+						if (o instanceof ClassDiagramFilterV2) {
+							ClassDiagramFilterV2 diagramFilter = (ClassDiagramFilterV2) o;
+							MyClassDiagramFilter filter = new MyClassDiagramFilter(true, diagramFilter, filterText, filterShortDescription);
 							filters.add(filter);
 						}
 
@@ -214,9 +217,8 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 		viewer.refresh();
 		viewer.setInput(model.getNodes());
 	}
-	
-	public void loadActions() {
 
+	public void loadActions() {
 		IExtensionRegistry extRegistry = Platform.getExtensionRegistry();
 		IExtensionPoint extensionPoint = extRegistry.getExtensionPoint("pt.iscte.pidesco.classdiagram.PopupAction");
 		IExtension[] extensions = extensionPoint.getExtensions();
@@ -237,8 +239,9 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 				}
 			}
 		}
-	
-		menuHelper.setActions(actions);;
+
+		menuHelper.setActions(actions);
+		;
 	}
 
 }

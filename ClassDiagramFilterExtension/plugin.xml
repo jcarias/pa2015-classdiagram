@@ -2,11 +2,12 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="pt.iscte.pidesco.classdiagram.Filter">
-      <FilterClass
-            filter="classdiagramfilterextension.ExtensionPointTestFilter"
-            filterName="Filter Example">
-      </FilterClass>
+         point="pt.iscte.pidesco.classdiagram.FilterV2">
+      <Filter
+            DiagramFilterImpl="classdiagramfilterextension.ExtensionPointTestFilter"
+            filterShortDescription="Display only classes and it&apos;s public members"
+            filterText="Classes And Public Members">
+      </Filter>
    </extension>
 
 </plugin>

@@ -11,23 +11,8 @@ import pt.iscde.classdiagram.model.types.ETopElementType;
  * elements.
  * 
  * @author João Carias (74404)
- * @deprecated 
  */
-public interface ClassDiagramFilter  {
-
-	/**
-	 * Get the filter's name.
-	 * 
-	 * @return A {@link String} containing the filter's name
-	 */
-	public String getFilterName();
-
-	/**
-	 * Get the filter's short description
-	 * 
-	 * @return A {@link String} containing a short description of the filter
-	 */
-	public String getFilterShortDescription();
+public interface ClassDiagramFilterV2  {
 
 	/**
 	 * Filter for top level elements such as Classes, Interfaces or Enums
@@ -64,25 +49,9 @@ public interface ClassDiagramFilter  {
 	 *            See {@link EModifierType}.
 	 * @param returnType
 	 *            the String with the return type.
-	 * @return <code>true</code> if this element should be displayed,
-	 * 
+	 * @return <code>true</code> if this element (field or method) should be displayed,
 	 *         <code>false</code> otherwise.
 	 */
 	public boolean acceptCildElement(EChildElementType type, String name, EModifierType visibility, Set<EModifierType> modifiers, String returnType);
 	
-	/**
-	 * Gets the filter active state
-	 * @return <code>true</code> if the filter is active, <code>false</code> otherwise.
-	 */
-	public boolean isActive();
-	
-	/**
-	 * Activates the filter. Implementations must change the flag's value returned by <code>boolean isActive()</code> to <code>true</code>.
-	 */
-	public void activate();
-	
-	/**
-	 * Deactivates the filter. Implementations must change the flag's value returned by <code>boolean isActive()</code> to <code>false</code>.
-	 */
-	public void deactivate();
 }

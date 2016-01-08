@@ -2,16 +2,16 @@ package pt.iscde.classdiagram.extensibility.actions;
 
 import org.eclipse.zest.core.viewers.GraphViewer;
 
-import pt.iscde.classdiagram.extensibility.ClassDiagramFilter;
+import pt.iscde.classdiagram.internal.MyClassDiagramFilter;
 
 public class FilterAction extends RefreshAction{
 	
-	private ClassDiagramFilter filter;
+	private MyClassDiagramFilter filter;
 	
-	public FilterAction(ClassDiagramFilter classDiagramFilter, GraphViewer viewer) {
+	public FilterAction(MyClassDiagramFilter classDiagramFilter, GraphViewer viewer) {
 		super(viewer);
 		this.filter = classDiagramFilter;
-		setText(classDiagramFilter.getFilterName());
+		setText(classDiagramFilter.getFilterText());
 		setToolTipText(classDiagramFilter.getFilterShortDescription());
 		setChecked(classDiagramFilter.isActive());
 	}
@@ -19,9 +19,9 @@ public class FilterAction extends RefreshAction{
 	@Override
 	public void run() {
 		if(filter.isActive()){
-			filter.deactivate();
+			filter.setActive(false);
 		}else{
-			filter.activate();
+			filter.setActive(true);
 		}
 		
 		setChecked(filter.isActive());

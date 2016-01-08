@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.eclipse.draw2d.IFigure;
 
-import pt.iscde.classdiagram.extensibility.ClassDiagramFilter;
 import pt.iscde.classdiagram.extensibility.ClassDiagramStyler;
+import pt.iscde.classdiagram.internal.MyClassDiagramFilter;
 import pt.iscde.classdiagram.model.types.EModifierType;
 import pt.iscde.classdiagram.model.types.ETopElementType;
 
@@ -52,6 +52,8 @@ public interface TopLevelElement {
 	public IFigure getFigure(ClassDiagramStyler styler);
 	
 	public void addMmodifier(EModifierType modifierType);
+	
+	public EModifierType getAccessControlType();
 
 	/**
 	 * Set the selected state
@@ -65,7 +67,7 @@ public interface TopLevelElement {
 	 */
 	public boolean isSelected();
 
-	public void setFilters(List<ClassDiagramFilter> filters);
+	public void setFilters(List<MyClassDiagramFilter> filters);
 
 }
 

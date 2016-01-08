@@ -3,7 +3,7 @@ package pt.iscde.classdiagram.model.zest;
 import java.util.ArrayList;
 import java.util.List;
 
-import pt.iscde.classdiagram.extensibility.ClassDiagramFilter;
+import pt.iscde.classdiagram.internal.MyClassDiagramFilter;
 import pt.iscde.classdiagram.model.MyConnection;
 import pt.iscde.classdiagram.model.MyTopLevelElement;
 import pt.iscde.classdiagram.model.TopLevelElement;
@@ -11,12 +11,12 @@ import pt.iscde.classdiagram.model.TopLevelElement;
 public class NodeModelContentProvider {
 	private List<MyConnection> connections;
 	private List<MyTopLevelElement> nodes;
-	private List<ClassDiagramFilter> filters;
+	private List<MyClassDiagramFilter> filters;
 
 	public NodeModelContentProvider() {
 		nodes = new ArrayList<MyTopLevelElement>();
 		connections = new ArrayList<MyConnection>();
-		filters = new ArrayList<ClassDiagramFilter>();
+		filters = new ArrayList<MyClassDiagramFilter>();
 
 		for (MyConnection connection : connections) {
 			connection.getSource().getConnectedTo().add(connection.getDestination());
@@ -34,9 +34,9 @@ public class NodeModelContentProvider {
 		}
 	}
 	
-	public void addFilters(List<ClassDiagramFilter> filters){
+	public void addFilters(List<MyClassDiagramFilter> filters){
 		if(filters!=null){
-			for (ClassDiagramFilter classDiagramFilter : filters) {
+			for (MyClassDiagramFilter classDiagramFilter : filters) {
 				this.filters.add(classDiagramFilter);
 			}
 		}
@@ -54,7 +54,7 @@ public class NodeModelContentProvider {
 	
 	
 	public void  clearFilters(){
-		filters = new ArrayList<ClassDiagramFilter>();
+		filters = new ArrayList<MyClassDiagramFilter>();
 		
 		if(nodes!=null){
 			for (MyTopLevelElement element : nodes) {
