@@ -27,6 +27,8 @@ import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 import pt.iscde.classdiagram.extensibility.ClassDiagramAction;
 import pt.iscde.classdiagram.extensibility.ClassDiagramFilterV2;
 import pt.iscde.classdiagram.extensibility.ClassDiagramMenuHelper;
+import pt.iscde.classdiagram.extensibility.ILayoutExtender;
+import pt.iscde.classdiagram.extensibility.actions.ChangeLayoutAction;
 import pt.iscde.classdiagram.extensibility.actions.RefreshAction;
 import pt.iscde.classdiagram.model.zest.ClassDiagramContentProvider;
 import pt.iscde.classdiagram.model.zest.ClassDiagramLabelProvider;
@@ -51,7 +53,12 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 	private static JavaEditorServices javaEditorServices;
 
 	private List<ClassDiagramAction> actions;
+<<<<<<< HEAD
 	private List<MyClassDiagramFilter> filters;
+=======
+	private List<ClassDiagramFilter> filters;
+	private List<ILayoutExtender> layouts;
+>>>>>>> origin/master
 
 	private GraphViewer viewer;
 	private NodeModelContentProvider model;
@@ -67,6 +74,7 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 		javaEditorServices.addListener(this);
 		filters = new ArrayList<MyClassDiagramFilter>();
 		actions = new ArrayList<ClassDiagramAction>();
+		layouts = new ArrayList<ILayoutExtender>();
 	}
 
 	public static ClassDiagramView getInstance() {
@@ -84,19 +92,21 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 		viewer.setLabelProvider(new ClassDiagramLabelProvider(new DefaultStyler()));
 		model = new NodeModelContentProvider();
 		viewer.setInput(model.getNodes());
-		LayoutAlgorithm layout = setLayout();
+		LayoutAlgorithm layout = getDefaultLayout();
 		viewer.setLayoutAlgorithm(layout, true);
 		viewer.applyLayout();
 
 		menuHelper = new ClassDiagramMenuHelper(viewer);
 		menuHelper.addDefaultAction(new RefreshAction(viewer));
+		menuHelper.addDefaultAction(new ChangeLayoutAction(viewer, "Default Layout", getDefaultLayout()));
 		viewer.getGraphControl().setMenu(menuHelper.getMenu());
 
 		loadActions();
+		loadLayouts();
 		viewer.addSelectionChangedListener(new ClassDiagramGraphViewerSelectionChangedListener(viewer, actions));
 	}
 
-	private LayoutAlgorithm setLayout() {
+	private LayoutAlgorithm getDefaultLayout() {
 		TreeLayoutAlgorithm springLayoutAlgorithm = new TreeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
 		HorizontalShift horizontalShift = new HorizontalShift(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
 		return new CompositeLayoutAlgorithm(new LayoutAlgorithm[] { horizontalShift, springLayoutAlgorithm });
@@ -239,9 +249,43 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 				}
 			}
 		}
+<<<<<<< HEAD
 
 		menuHelper.setActions(actions);
 		;
+=======
+	
+		menuHelper.setActions(actions);
+	}
+	
+	
+	public void loadLayouts() {
+
+		try{
+		IExtensionRegistry extRegistry = Platform.getExtensionRegistry();
+		IExtensionPoint extensionPoint = extRegistry.getExtensionPoint("pt.iscte.pidesco.classdiagram.LayoutAlgorithm");
+		IExtension[] extensions = extensionPoint.getExtensions();
+		for (IExtension e : extensions) {
+			IConfigurationElement[] confElements = e.getConfigurationElements();
+			for (IConfigurationElement c : confElements) {
+				try {
+					Object o = c.createExecutableExtension("Layout");
+					String layoutText = (String) c.getAttribute("layoutName");
+					if (o instanceof ILayoutExtender) {
+						ILayoutExtender layout = (ILayoutExtender) o;
+						layouts.add(layout);
+					}
+
+				} catch (CoreException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
+	
+		menuHelper.setLayouts(layouts);
+		}
+		catch(Exception ex){ex.printStackTrace();}
+>>>>>>> origin/master
 	}
 
 }

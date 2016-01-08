@@ -8,7 +8,14 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.zest.core.viewers.GraphViewer;
+import org.eclipse.zest.layouts.LayoutAlgorithm;
+import org.eclipse.zest.layouts.LayoutStyles;
+import org.eclipse.zest.layouts.algorithms.AbstractLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.CompositeLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.HorizontalShift;
+import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 
+import pt.iscde.classdiagram.extensibility.actions.ChangeLayoutAction;
 import pt.iscde.classdiagram.extensibility.actions.FilterAction;
 import pt.iscde.classdiagram.internal.MyClassDiagramFilter;
 
@@ -19,6 +26,7 @@ public class ClassDiagramMenuHelper {
 	private List<ClassDiagramAction> actions;
 	private GraphViewer viewer;
 	private MenuManager mm;
+	private List<ILayoutExtender> layouts;
 
 	public ClassDiagramMenuHelper(GraphViewer viewer) {
 		super();
@@ -32,15 +40,16 @@ public class ClassDiagramMenuHelper {
 
 	public Menu getMenu() {
 		mm.createContextMenu(viewer.getGraphControl());
-		upadateManager();
+		updateManager();
 		return mm.getMenu();
 	}
 	
-	private void upadateManager() {
+	private void updateManager() {
 		mm.removeAll();
 		addDefaultActionsToMenu();
 		addFiltersToMenu();
 		addActionsToMenu();
+		addLayoutsToMenu();
 	}
 
 	private void addDefaultActionsToMenu() {
@@ -71,20 +80,40 @@ public class ClassDiagramMenuHelper {
 		}
 
 	}
+	
+	private void addLayoutsToMenu() {
+		if (layouts != null && layouts.size() > 0) {
+			mm.add(new Separator());
+			for (ILayoutExtender layout : layouts) {
+				mm.add(new ChangeLayoutAction(viewer, layout.getLayoutName(), getLayout(layout)));
+			}
+		}
+
+	}
+	
+	private CompositeLayoutAlgorithm getLayout(ILayoutExtender layout) {
+		HorizontalShift horizontalShift = new HorizontalShift(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
+		return new CompositeLayoutAlgorithm(new LayoutAlgorithm[] { horizontalShift,  layout.getLayout() });
+	}
 
 
 	public void addDefaultAction(Action refreshAction) {
 		defaultActions.add(refreshAction);
-		upadateManager();
+		updateManager();
 	}
 
 	public void setFilters(List<MyClassDiagramFilter> filters) {
 		this.filters = filters;
-		upadateManager();
+		updateManager();
 	}
 
 	public void setActions(List<ClassDiagramAction> actions) {
 		this.actions = actions;
-		upadateManager();
+		updateManager();
+	}
+
+	public void setLayouts(List<ILayoutExtender> layouts) {
+		this.layouts = layouts;
+		updateManager();
 	}
 }
