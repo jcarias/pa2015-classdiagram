@@ -7,7 +7,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.zest.core.viewers.GraphViewer;
 
-import pt.iscde.classdiagram.extensibility.ClassDiagramAction;
 import pt.iscde.classdiagram.model.TopLevelElement;
 
 class ClassDiagramGraphViewerSelectionChangedListener implements ISelectionChangedListener {

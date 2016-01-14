@@ -1,4 +1,4 @@
-package pt.iscde.classdiagram.extensibility;
+package pt.iscde.classdiagram.internal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +13,9 @@ import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.CompositeLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.HorizontalShift;
 
+import pt.iscde.classdiagram.extensibility.ILayoutExtender;
 import pt.iscde.classdiagram.extensibility.actions.ChangeLayoutAction;
 import pt.iscde.classdiagram.extensibility.actions.FilterAction;
-import pt.iscde.classdiagram.internal.MyClassDiagramFilter;
 
 public class ClassDiagramMenuHelper {
 

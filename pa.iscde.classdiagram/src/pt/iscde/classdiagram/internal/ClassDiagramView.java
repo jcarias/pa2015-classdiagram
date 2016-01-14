@@ -24,9 +24,8 @@ import org.eclipse.zest.layouts.algorithms.CompositeLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.HorizontalShift;
 import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 
-import pt.iscde.classdiagram.extensibility.ClassDiagramAction;
 import pt.iscde.classdiagram.extensibility.ClassDiagramFilterV2;
-import pt.iscde.classdiagram.extensibility.ClassDiagramMenuHelper;
+import pt.iscde.classdiagram.extensibility.IClassDiagramAction;
 import pt.iscde.classdiagram.extensibility.ILayoutExtender;
 import pt.iscde.classdiagram.extensibility.actions.ChangeLayoutAction;
 import pt.iscde.classdiagram.extensibility.actions.RefreshAction;
@@ -235,10 +234,12 @@ public class ClassDiagramView implements PidescoView, ClassDiagramServices, Proj
 				try {
 					Object o = c.createExecutableExtension("action");
 					String actionText = (String) c.getAttribute("Action_Text");
-					if (o instanceof ClassDiagramAction) {
-						ClassDiagramAction action = (ClassDiagramAction) o;
-						action.setText(actionText);
-						actions.add(action);
+					if (o instanceof IClassDiagramAction) {
+						IClassDiagramAction action = (IClassDiagramAction) o;
+						ClassDiagramAction myAction = new ClassDiagramAction();
+						myAction.setText(actionText);
+						myAction.setAction(action);
+						actions.add(myAction);
 					}
 
 				} catch (CoreException e1) {
