@@ -1,13 +1,14 @@
 package actiontester;
 
-import pt.iscde.classdiagram.extensibility.ClassDiagramAction;
+import pt.iscde.classdiagram.extensibility.IClassDiagramAction;
+import pt.iscde.classdiagram.model.TopLevelElement;
 
-public class ClassDiagramActionTest extends ClassDiagramAction {
+public class ClassDiagramActionTest implements IClassDiagramAction {
 
 	/// INTERFACE
-	
+
 	@Override
-	public void run() {
+	public void run(TopLevelElement selectedElement) {
 		if(selectedElement!=null){
 			System.out.println(selectedElement.getName());
 			selectedElement.setSelected(true);
