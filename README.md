@@ -18,7 +18,7 @@ Note: the filters will can be activated/deactivated globally using the toggle bu
 
 
 ###The Action Extension Point
-(TODO: Provide short description here)
+This Extension point allows for the extension implementers to execute actions over our plugin.
 
 
 ##Extensions to other plugins
