@@ -33,7 +33,7 @@ public interface ClassDiagramFilter  {
 	 * Filter for top level elements such as Classes, Interfaces or Enums
 	 * 
 	 * @param type
-	 *            the top element's type (see {@link ETopElementType}).
+	 *            the top element's type (see {@link ETopElementType}). 
 	 * @param name
 	 *            the top element's name.
 	 * @param visibility
@@ -42,7 +42,7 @@ public interface ClassDiagramFilter  {
 	 *            "PRIVATE",...
 	 * @param modifiers
 	 *            a set of top element's modifiers (e.g. "STATIC", "FINAL",...).
-	 *            See {@link EModifierType}.
+	 *            See {@link EModifierType}. It may be empty or <code>null</code>
 	 * @return <code>true</code> if this element should be displayed,
 	 *         <code>false</code> otherwise.
 	 */

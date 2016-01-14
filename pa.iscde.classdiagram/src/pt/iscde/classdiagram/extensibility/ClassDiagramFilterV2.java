@@ -26,7 +26,7 @@ public interface ClassDiagramFilterV2  {
 	 *            {@link EModifierType}. Typically these can be one of "PUBLIC",
 	 *            "PRIVATE",...
 	 * @param modifiers
-	 *            a set of top element's modifiers (e.g. "STATIC", "FINAL",...).
+	 *            a set of top element's modifiers (e.g. "STATIC", "FINAL",...). It may be empty or <code>null</code>
 	 *            See {@link EModifierType}.
 	 * @return <code>true</code> if this element should be displayed,
 	 *         <code>false</code> otherwise.
@@ -45,10 +45,10 @@ public interface ClassDiagramFilterV2  {
 	 *            the top element's access control type (e.g., "PUBLIC",
 	 *            "PRIVATE",...). See {@link EModifierType}.
 	 * @param modifiers
-	 *            a set of top element's modifiers (e.g. "STATIC", "FINAL",...).
+	 *            a set of top element's modifiers (e.g. "STATIC", "FINAL",...). . It may be empty or <code>null</code>
 	 *            See {@link EModifierType}.
 	 * @param returnType
-	 *            the String with the return type.
+	 *            the String with the return type. . It may be empty or <code>null</code>
 	 * @return <code>true</code> if this element (field or method) should be displayed,
 	 *         <code>false</code> otherwise.
 	 */
